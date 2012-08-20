@@ -1,6 +1,6 @@
 #README
 
-Super duper light-weight customizable jquery plug-in markdown-editor.
+Super duper experimental lightweight customizable jquery plugin markdown editor. Dang.
 
 Usage:
 	

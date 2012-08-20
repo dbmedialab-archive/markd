@@ -24,7 +24,6 @@
 			$(this).addClass('reword mousetrap');
 
 			var _element  = $(this);
-			var _state = '';
 			var _parser = window.marked;
 			var _is_fullscreen = false;
 			var preview = {};
@@ -35,6 +34,36 @@
 				pedantic: opts.parser.pedantic, 
 				sanitize: opts.parser.sanitize
 			});
+			
+			/**
+			 * Get user input
+			 * @param	{element}
+			 * @return	{string}
+			 **/
+			function _getContent(el){
+				if(el.is('textarea')){
+					return el.val();
+				} else {
+      				// Fixme: Why does not el.innerText work? Is should right?
+      				return document.getElementById(el.attr('id')).innerText;
+				};
+			};
+			
+			/**
+			 * Update user input-field
+			 * @param	{element}
+			 * @param	{string}
+			 * @return	{void}
+			 **/
+			function _setContent(el, content){
+				if(el.is('textarea')){
+					el.val(content);
+				} else {
+					//content = content.replace(/\u00a0/g, ' ').replace(/&nbsp;/g, ' ');
+					content = content.replace(/\n/g, '<br>');
+					el.html(content);
+				};
+			};
 			
 			/**
 			 * Create a new iframe at the top of the document
@@ -65,6 +94,13 @@
 				return p = {};
 			}
 			
+			/**
+			 * Insert a string into a string
+			 * @param	{string} original string
+			 * @param	{int} 	 where to insert the string
+			 * @param	{string} string to insert
+			 * @return	{string} the new string
+			 **/
 			function insert(string, index, insert){
 				if (index > 0){
 					return string.substring(0, index) + insert + string.substring(index, string.length);
@@ -75,31 +111,43 @@
 			
 			// !Bind keyboard commands when the textfield recives focus.
 			_element.bind('focus', function(event){
-
+				
+				// !Bind tab to fake-enable tabbing
+				Mousetrap.bind('tab', function(){
+					var selection = _element.selection();
+					var t = _getContent(_element);
+					t = insert(t, selection.end, '    ');
+					_setContent(_element, t);
+					return false;
+				});
+				
+				// !Bind ctrl-k to links
 				Mousetrap.bind('ctrl+k', function(){
 					var selection = _element.selection();
-					var t = _element.val();
-					t = insert(t, selection.end, '](http://example.net/)');
+					var t = _getContent(_element);
+					t = insert(t, selection.end, ']()');
 					t = insert(t, selection.start, '[');
-					_element.val(t);
+					_setContent(_element, t);
 					return false;
 				});				
 				
+				// !Bind ctrl-b to bold
 				Mousetrap.bind('ctrl+b', function(){
 					var selection = _element.selection();
-					var t = _element.val();
+					var t = _getContent(_element);
 					t = insert(t, selection.end, '__');
 					t = insert(t, selection.start, '__');
-					_element.val(t);
+					_setContent(_element, t);
 					return false;
 				});
-
+				
+				// !Bind ctrl-i to emphasis/italic
 				Mousetrap.bind('ctrl+i', function(){
 					var selection = _element.selection();
-					var t = _element.val();
+					var t = _getContent(_element);
 					t = insert(t, selection.end, '_');
 					t = insert(t, selection.start, '_');
-					_element.val(t);
+					_setContent(_element, t);
 					return false;
 				});
 				
@@ -109,7 +157,7 @@
 					return false;
 				});
 				
-				// !Bind ctrl-p as to toggle preview text
+				// !Bind ctrl-p to toggle preview text
 				Mousetrap.bind('ctrl+p', function(){
 					if(!_is_fullscreen){
 						if(preview.el == undefined){
@@ -123,7 +171,9 @@
 								height: _element.outerHeight()
 							});
 							//Render the text into the iframe
-							preview.body.html( _parser( _element.val() ) );
+							//preview.body.html( _parser( _element.val() ) );
+							preview.body.html( _parser(_getContent(_element)) );
+							
 						} else {
 							//Remove and delete the preview
 							preview = deletePreview(preview);
@@ -169,6 +219,10 @@
 			// !Unbind keyboard commands and clean-up when textarea looses focus.
 			_element.bind('blur', function(event){
 				// Unbind the keyboard commands
+				Mousetrap.unbind('tab');
+				Mousetrap.unbind('ctrl+b');
+				Mousetrap.unbind('ctrl+i');
+				Mousetrap.unbind('ctrl+k');
 				Mousetrap.unbind('ctrl+h');
 				Mousetrap.unbind('ctrl+p');
 				Mousetrap.unbind('ctrl+f');

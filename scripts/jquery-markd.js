@@ -44,7 +44,13 @@
 				if(el.is('textarea')){
 					return el.val();
 				} else {
-					return document.getElementById(el.attr('id')).innerText;
+					var content = document.getElementById(el.attr('id')).innerText;
+					//Get this, 2 spaces in a content editable actually converts to:
+					//0020 00a0, meaning, "space no-break space". So, manually convert
+					//no-break spaces to spaces again before handing to marked.
+					//Thanks to Oscar Godson for that little tidbit.
+					content = content.replace(/\u00a0/g, ' ').replace(/&nbsp;/g, ' ');
+					return content;
 				};
 			};
 			
@@ -58,7 +64,6 @@
 				if(el.is('textarea')){
 					el.val(content);
 				} else {
-					//content = content.replace(/\u00a0/g, ' ').replace(/&nbsp;/g, ' ');
 					content = content.replace(/\n/g, '<br>');
 					el.html(content);
 				};

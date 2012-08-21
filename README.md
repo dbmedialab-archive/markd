@@ -2,6 +2,11 @@
 
 Super duper experimental lightweight customizable jquery plugin markdown editor. Dang.
 
+Dependecies:
+
+* [Marked](https://github.com/chjj/marked.git)
+* [Mousetrap](https://github.com/ccampbell/mousetrap.git)
+
 Usage:
 	
 	$('#message').markd();

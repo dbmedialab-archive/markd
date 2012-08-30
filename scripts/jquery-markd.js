@@ -180,11 +180,7 @@
 				});
 				
 				// !Bind ctrl-p to toggle preview text
-				Mousetrap.bind(opts.keyboardShortcuts.preview, function(){
-					
-					/*
-						FIXME: bind keyboard shortcut esc to exit preview-mode.
-					*/
+				Mousetrap.bind(opts.keyboardShortcuts.preview, function(){					
 					if(!_is_fullscreen){
 						if(preview.el == undefined){
 							//Create a new iframe to preview the text

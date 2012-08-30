@@ -1,3 +1,7 @@
+/* 
+	The editor recives the class '.markd'. 
+	Any global styles for the editor can be added to this class.
+*/
 .markd{
 	font-family: menlo, monospace;
 	font-size: 12px;
@@ -18,6 +22,10 @@
 	overflow: scroll;
 }
 
+/*
+	The editor additionally recives the class '.fullscreen' when in fullscreen-mode.
+	Any global styles for the fullscreen-mode editor can be added to the chained classes.
+*/
 .markd.fullscreen{
 	background: white;
 	color: rgb(31, 31, 31);
@@ -35,6 +43,11 @@
 	outline: none;
 }
 
+/*
+	The iframe that displays the preview has the class '.markd-preview'.
+	Note that the iframe is positioned with top and left, and width and height
+	using javascript depending on the placement of the textarea.
+*/
 .markd-preview{
 	background: white;
 	border: none;
@@ -44,6 +57,9 @@
 	-webkit-box-sizing: border-box;
 }
 
+/*
+	The editor preview additionally recives the class '.fullscreen' when in fullscreen-mode.
+*/
 .markd-preview.fullscreen{
 	position: fixed;
 	width: 50%;

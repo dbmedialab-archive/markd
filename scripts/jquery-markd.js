@@ -21,7 +21,7 @@
 		
 		return this.each(function(){
 
-			$(this).addClass('reword mousetrap');
+			$(this).addClass('markd mousetrap');
 
 			var _element  = $(this);
 			var _parser = window.marked;
@@ -77,7 +77,7 @@
 			function createPreview(){
 				var p = {};
 				//Create a new iframe-element
-				p.el = $('<iframe class="reword-preview"></iframe>');
+				p.el = $('<iframe class="markd-preview"></iframe>');
 				//Add the element to the top of the document
 				$('body').prepend(p.el);
 				//Create aliases for the head and body inside the iframe for easy access

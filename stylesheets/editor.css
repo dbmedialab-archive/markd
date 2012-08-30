@@ -1,4 +1,4 @@
-.reword{
+.markd{
 	font-family: menlo, monospace;
 	font-size: 12px;
 	line-height: 16px;
@@ -15,9 +15,10 @@
 	-webkit-box-sizing: border-box;
 	-webkit-border-radius: 3px;
 	-webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
+	overflow: scroll;
 }
 
-.reword.fullscreen{
+.markd.fullscreen{
 	background: white;
 	color: rgb(31, 31, 31);
 	position: fixed;
@@ -30,11 +31,11 @@
 	resize: none;
 }
 
-.reword:focus{
+.markd:focus{
 	outline: none;
 }
 
-.reword-preview{
+.markd-preview{
 	background: white;
 	border: none;
 	z-index: 9000;
@@ -43,7 +44,7 @@
 	-webkit-box-sizing: border-box;
 }
 
-.reword-preview.fullscreen{
+.markd-preview.fullscreen{
 	position: fixed;
 	width: 50%;
 	height: 100%;

@@ -4,7 +4,7 @@
 	--------
 
 	@file	   	jquery-markd.js
-	@version	
+	@version	0.1.0
 	@date	   	30.08.12
 	@author	 	Tom-Marius Olsen <tmol@dagbladet.no>
 
@@ -197,11 +197,19 @@
 								height: _element.outerHeight()
 							});
 							//Render the text into the iframe
-							preview.body.html( _parser(_getContent(_element)) );
-							
+							preview.body.html( _parser(_getContent(_element)) );							
+							// Bind esc to close preview
+							Mousetrap.bind('esc', function(){
+								//Remove and delete the preview
+								preview = deletePreview(preview);
+								//Unbind esc
+								Mousetrap.unbind('esc');
+							});
 						} else {
 							//Remove and delete the preview
 							preview = deletePreview(preview);
+							//Unbind esc
+							Mousetrap.unbind('esc');
 						};
 					};
 					//Return false to prevent default browser behavior.

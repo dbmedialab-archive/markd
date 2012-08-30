@@ -3,10 +3,10 @@
 	jquery-markd
 	--------
 
-	@file	   jquery-markd.js
+	@file	   	jquery-markd.js
 	@version	
-	@date	   18.08.12
-	@author	 Tom-Marius Olsen <tmol@dagbladet.no>
+	@date	   	30.08.12
+	@author	 	Tom-Marius Olsen <tmol@dagbladet.no>
 
 	Copyright (c) 2012 DB Medialab AS <http://www.dbmedialab.no/>
 
@@ -144,7 +144,7 @@
 				});
 				
 				// !Bind ctrl-k to links
-				Mousetrap.bind('ctrl+k', function(){
+				Mousetrap.bind(opts.keyboardShortcuts.link, function(){
 					var s = _getSelection(_element);
 					var t = _getContent(_element);
 					t = insert(t, s.end, ']()');
@@ -154,7 +154,7 @@
 				});
 				
 				// !Bind ctrl-b to bold
-				Mousetrap.bind('ctrl+b', function(){
+				Mousetrap.bind(opts.keyboardShortcuts.bold, function(){
 					var s = _getSelection(_element);
 					var t = _getContent(_element);
 					t = insert(t, s.end, '__');
@@ -164,7 +164,7 @@
 				});
 				
 				// !Bind ctrl-i to emphasis/italic
-				Mousetrap.bind('ctrl+i', function(){
+				Mousetrap.bind(opts.keyboardShortcuts.italic, function(){
 					var s = _getSelection(_element);
 					var t = _getContent(_element);
 					t = insert(t, s.end, '_');
@@ -174,13 +174,17 @@
 				});
 				
 				// !Bind ctrl-h as in 'help'. Opens a new window showing the markdown syntax.
-				Mousetrap.bind('ctrl+h', function(){
+				Mousetrap.bind(opts.keyboardShortcuts.help, function(){
 					window.open('http://daringfireball.net/projects/markdown/syntax', '_blank');
 					return false;
 				});
 				
 				// !Bind ctrl-p to toggle preview text
-				Mousetrap.bind('ctrl+p', function(){
+				Mousetrap.bind(opts.keyboardShortcuts.preview, function(){
+					
+					/*
+						FIXME: bind keyboard shortcut esc to exit preview-mode.
+					*/
 					if(!_is_fullscreen){
 						if(preview.el == undefined){
 							//Create a new iframe to preview the text
@@ -205,7 +209,7 @@
 				});
 				
 				// !Bind ctrl-f as a toggle for fullscreen-mode.
-				Mousetrap.bind('ctrl+f', function(){
+				Mousetrap.bind(opts.keyboardShortcuts.fullscreen, function(){
 					//Enter fullscreen
 					if(!_is_fullscreen){
 						//Flag fullscreen as true
@@ -256,12 +260,12 @@
 			_element.bind('blur', function(event){
 				// Unbind the keyboard commands
 				Mousetrap.unbind('tab');
-				Mousetrap.unbind('ctrl+b');
-				Mousetrap.unbind('ctrl+i');
-				Mousetrap.unbind('ctrl+k');
-				Mousetrap.unbind('ctrl+h');
-				Mousetrap.unbind('ctrl+p');
-				Mousetrap.unbind('ctrl+f');
+				Mousetrap.unbind(opts.keyboardShortcuts.bold);
+				Mousetrap.unbind(opts.keyboardShortcuts.italic);
+				Mousetrap.unbind(opts.keyboardShortcuts.link);
+				Mousetrap.unbind(opts.keyboardShortcuts.help);
+				Mousetrap.unbind(opts.keyboardShortcuts.preview);
+				Mousetrap.unbind(opts.keyboardShortcuts.fullscreen);
 				// If we are not in fullscreen-mode and the preview is visible, we need to kill the preview.
 				if(!_is_fullscreen) preview = deletePreview(preview);
 			});
@@ -270,8 +274,17 @@
 		
 	};
 	
+	// !Default options
 	$.fn.markd.defaults = {
 		theme: 'preview.css',
+		keyboardShortcuts: {
+			bold: 		'ctrl+b',
+			italic: 	'ctrl+i',
+			link: 		'ctrl+k',
+			help:		'ctrl+h',
+			preview:	'ctrl+p',
+			fullscreen: 'ctrl+f'
+		},
 		parser: {
 			pedantic: false,
 			sanitize: false

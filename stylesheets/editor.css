@@ -16,10 +16,13 @@
 	top: 100px;
 	border: none;
 	background-color: rgb(31, 31, 31);
+	overflow-x: hidden;
+	overflow-y: scroll;	
 	-webkit-box-sizing: border-box;
-	-webkit-border-radius: 3px;
-	-webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
-	overflow: scroll;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border-radius: 3px;
+	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
 }
 
 /*

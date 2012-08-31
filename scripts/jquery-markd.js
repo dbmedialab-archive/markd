@@ -44,7 +44,11 @@
 				if(el.is('textarea')){
 					return el.val();
 				} else {
-					var content = document.getElementById(el.attr('id')).innerText;
+					if(document.getElementById(el.attr('id')).innerText){
+						var content = document.getElementById(el.attr('id')).innerText;
+					} else {
+						var content = document.getElementById(el.attr('id')).textContent;
+					};
 					//Get this, 2 spaces in a content editable actually converts to:
 					//0020 00a0, meaning, "space no-break space". So, manually convert
 					//no-break spaces to spaces again before handing to marked.
@@ -70,6 +74,21 @@
 			};
 			
 			/**
+			 * Place the cursor at a certain position
+			 * @param	{element}
+			 * @param	{int}
+			 * @return	{void}
+			 **/
+			function _setCursor(el, position){
+				el.selection(position, position);
+			};
+
+			function _getIframeInnards(el) {
+				return el.contentDocument || el.contentWindow.document;
+			}
+
+			
+			/**
 			 * Create a new iframe at the top of the document
 			 * @param	{none}
 			 * @return	{object} reference to the iframe
@@ -80,9 +99,16 @@
 				p.el = $('<iframe class="markd-preview"></iframe>');
 				//Add the element to the top of the document
 				$('body').prepend(p.el);
+				p.innards = _getIframeInnards(p.el[0]);
+				//Need something for... you guessed it, Firefox
+				//I have no idea why the open, write, close statements are needed in Firefox,
+				//but for some reason it works once thy have been called. 
+				p.innards.open();
+				p.innards.write('');
+				p.innards.close();
 				//Create aliases for the head and body inside the iframe for easy access
-				p.head = $('head', p.el[0].contentWindow.document);
-				p.body = $('body', p.el[0].contentWindow.document);
+				p.head = $('head', p.innards);
+				p.body = $('body', p.innards);								
 				//Add the preview-theme to the iframe
 				p.head.append('<link rel="stylesheet" href="'+opts.theme+'" />');
 				return p;

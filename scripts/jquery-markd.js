@@ -82,7 +82,12 @@
 			function _setCursor(el, position){
 				el.selection(position, position);
 			};
-
+			
+			/**
+			 * Get content of iframe depending on browser
+			 * @param	{element}
+			 * @return	{element}
+			 **/
 			function _getIframeInnards(el) {
 				return el.contentDocument || el.contentWindow.document;
 			}
@@ -161,9 +166,7 @@
 				};
 				return selection;
 			};
-			
-			 //_setContent(_element, _getContent(_element));
-			
+						
 			// !Bind keyboard commands when the textfield recives focus.
 			_element.bind('focus', function(event){
 				

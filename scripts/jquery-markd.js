@@ -149,13 +149,20 @@
 				if(!el.is('textarea')){
 					//If we are not using a textarea newlines does not count in the selection-range,
 					//so we need to add these manually.
-					var t = _getContent(el);
-					var newlines = t.substr(0, selection.start).match(/\n/g).length;
-					selection.start += newlines;
-					selection.end += newlines;
+					var t = _getContent(el).substr(0, (selection.end));
+					var i = 0;
+					var newlines = t.match(/\n/g);
+					if( newlines != null ){
+						i = t.substr(0, (selection.end+1)).match(/\n/g).length;
+						selection.start += i;
+						selection.end += i;
+					};					
+					
 				};
 				return selection;
 			};
+			
+			 //_setContent(_element, _getContent(_element));
 			
 			// !Bind keyboard commands when the textfield recives focus.
 			_element.bind('focus', function(event){

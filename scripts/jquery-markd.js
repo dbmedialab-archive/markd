@@ -16,7 +16,7 @@
 	
 	var methods = {
 		/**
-		 * If we are not using a textarea we need to remove all linebreaks or these will be counted twice.
+		 * Init
 		 * @param	{none}
 		 * @return	{void}
 		 **/
@@ -32,7 +32,8 @@
 			    var preview = {};
 			    var offset = _element.offset();
 				var opts = $(this).data('options');
-
+				
+				//If we are not using a textarea we need to remove all linebreaks or these will be counted twice.
 				if(!_element.is('textarea')){
 					var t = _element.html();
 					methods.setContent(_element, t.replace(/(\r\n|\n|\r)/gm, ''));
@@ -247,8 +248,16 @@
 		    	var t = methods.getContent(el).substr(0, selection.end);
 		    	var newlines = t.match(/(\r\n|\n|\r)/gm);
 		    	if( newlines != null ){
-		    		selection.start += newlines.length;
-		    		selection.end += newlines.length;
+		    		var n = methods.getContent(el).substr(0, ( selection.end+newlines.length )).match(/(\r\n|\n|\r)/gm);
+		    		selection.start += n.length;
+		    		selection.end += n.length;
+		    		//This fixes a issue where when selecting the first character in a line
+		    		//where the character before is a newline creates the wrong selection.
+		    		//It's not pretty, but it works.
+		    		if(methods.getContent(el).substring(selection.start, selection.end).match(/(\r\n|\n|\r)/gm)){
+			    		selection.start ++;
+			    		selection.end ++;
+		    		};
 		    	};
 		    };
 		    return selection;

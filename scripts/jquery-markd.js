@@ -68,7 +68,7 @@
 				if(el.is('textarea')){
 					el.val(content);
 				} else {
-					content = content.replace(/\n/g, '<br>');
+					content = content.replace(/(\r\n|\n|\r)/gm, '<br>');
 					el.html(content);
 				};
 			};
@@ -80,6 +80,15 @@
 			 * @return	{void}
 			 **/
 			function _setCursor(el, position){
+				if(!el.is('textarea')){
+					//If we are not using a textarea remove newlines
+					//as these do not count.
+					var t = _getContent(el).substr(0, position);
+					var newlines = t.match(/(\r\n|\n|\r)/gm);
+					if( newlines != null ){
+						position -= newlines.length;
+					};
+				};
 				el.selection(position, position);
 			};
 			
@@ -90,8 +99,7 @@
 			 **/
 			function _getIframeInnards(el) {
 				return el.contentDocument || el.contentWindow.document;
-			}
-
+			};
 			
 			/**
 			 * Create a new iframe at the top of the document
@@ -127,7 +135,7 @@
 			function deletePreview(p){
 				if(p.el != undefined) p.el.remove();
 				return p = {};
-			}
+			};
 			
 			/**
 			 * Insert a string into a string
@@ -154,19 +162,23 @@
 				if(!el.is('textarea')){
 					//If we are not using a textarea newlines does not count in the selection-range,
 					//so we need to add these manually.
-					var t = _getContent(el).substr(0, (selection.end));
-					var i = 0;
-					var newlines = t.match(/\n/g);
+					var t = _getContent(el).substr(0, selection.end);
+					var newlines = t.match(/(\r\n|\n|\r)/gm);
 					if( newlines != null ){
-						i = t.substr(0, (selection.end+1)).match(/\n/g).length;
-						selection.start += i;
-						selection.end += i;
-					};					
-					
+						selection.start += newlines.length;
+						selection.end += newlines.length;
+					};
 				};
 				return selection;
 			};
-						
+			
+			//If we are not using a textarea we need to remove all linebreaks
+			//or these will be counted twice.
+			if(!_element.is('textarea')){
+				var t = _element.html();
+				_setContent(_element, t.replace(/(\r\n|\n|\r)/gm, ''));
+			};
+			
 			// !Bind keyboard commands when the textfield recives focus.
 			_element.bind('focus', function(event){
 				
@@ -174,8 +186,13 @@
 				Mousetrap.bind('tab', function(){
 					var s = _getSelection(_element);
 					var t = _getContent(_element);
-					t = insert(t, s.end, '	');
+					if(_element.is('textarea')){
+						t = insert(t, s.end, '    ');
+					} else {
+						t = insert(t, s.end, '&nbsp;&nbsp;&nbsp;&nbsp;');
+					};
 					_setContent(_element, t);
+					_setCursor(_element, s.end+4);
 					return false;
 				});
 				
@@ -186,6 +203,7 @@
 					t = insert(t, s.end, ']()');
 					t = insert(t, s.start, '[');
 					_setContent(_element, t);
+					_setCursor(_element, s.end+3);
 					return false;
 				});
 				
@@ -193,9 +211,11 @@
 				Mousetrap.bind(opts.keyboardShortcuts.bold, function(){
 					var s = _getSelection(_element);
 					var t = _getContent(_element);
+					console.log('selection end: '+ s.end);
 					t = insert(t, s.end, '__');
 					t = insert(t, s.start, '__');
 					_setContent(_element, t);
+					_setCursor(_element, s.end+4);
 					return false;
 				});
 				
@@ -206,6 +226,7 @@
 					t = insert(t, s.end, '_');
 					t = insert(t, s.start, '_');
 					_setContent(_element, t);
+					_setCursor(_element, s.end+2);
 					return false;
 				});
 				

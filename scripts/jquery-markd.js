@@ -58,7 +58,7 @@
 			        	return false;
 			        });
 			        
-			        // !Bind ctrl-k to links
+			        // !Bind ctrl-L to links
 			        Mousetrap.bind(opts.keyboardShortcuts.link, function(){
 			        	var s = methods.getSelection(_element);
 			        	var t = methods.getContent(_element);			        	
@@ -74,6 +74,17 @@
 				        	methods.setContent(_element, t);
 				        	methods.setCursor(_element, s.end+3);
 			        	};
+			        	return false;
+			        });
+			        
+			        // !Bind ctrl-k to code
+			        Mousetrap.bind(opts.keyboardShortcuts.code, function(){
+			        	var s = methods.getSelection(_element);
+			        	var t = methods.getContent(_element);
+			        	t = methods.insert(t, s.end, '`');
+			        	t = methods.insert(t, s.start, '`');
+			        	methods.setContent(_element, t);
+			        	methods.setCursor(_element, s.end+2);
 			        	return false;
 			        });
 			        
@@ -273,11 +284,11 @@
 		 * @return	{void}
 		 **/
 		setCursor: function(el, position) {
+		    var t = methods.getContent(el);
 		    if(!el.is('textarea')){
 		    	//If we are not using a textarea remove newlines
 		    	//as these do not count.
-		    	var t = methods.getContent(el).substr(0, position);
-		    	var newlines = t.match(/(\r\n|\n|\r)/gm);
+		    	var newlines = t.substr(0, position).match(/(\r\n|\n|\r)/gm);
 		    	if( newlines != null ){
 		    		position -= newlines.length;
 		    	};
@@ -360,7 +371,8 @@
 		keyboardShortcuts: {
 			bold: 		'ctrl+b',
 			italic: 	'ctrl+i',
-			link: 		'ctrl+k',
+			code: 		'ctrl+k',
+			link: 		'ctrl+l',
 			help:		'ctrl+h',
 			preview:	'ctrl+p',
 			fullscreen: 'ctrl+f'

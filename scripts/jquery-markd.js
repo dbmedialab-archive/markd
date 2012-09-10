@@ -65,11 +65,19 @@
 			        // !Bind ctrl-k to links
 			        Mousetrap.bind(opts.keyboardShortcuts.link, function(){
 			        	var s = methods.getSelection(_element);
-			        	var t = methods.getContent(_element);
-			        	t = methods.insert(t, s.end, ']()');
-			        	t = methods.insert(t, s.start, '[');
-			        	methods.setContent(_element, t);
-			        	methods.setCursor(_element, s.end+3);
+			        	var t = methods.getContent(_element);			        	
+			        	var l = t.substring(s.start, s.end).match(/(http|https|ftp):\/\//);
+			        	if(l != null){
+				        	t = methods.insert(t, s.end, ')');
+				        	t = methods.insert(t, s.start, '[](');
+				        	methods.setContent(_element, t);
+				        	methods.setCursor(_element, s.start+1);
+			        	} else {
+				        	t = methods.insert(t, s.end, ']()');
+				        	t = methods.insert(t, s.start, '[');
+				        	methods.setContent(_element, t);
+				        	methods.setCursor(_element, s.end+3);
+			        	};
 			        	return false;
 			        });
 			        

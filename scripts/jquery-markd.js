@@ -52,13 +52,9 @@
 			        Mousetrap.bind('tab', function(){
 			        	var s = methods.getSelection(_element);
 			        	var t = methods.getContent(_element);
-			        	if(_element.is('textarea')){
-			        		t = methods.insert(t, s.end, '    ');
-			        	} else {
-			        		t = methods.insert(t, s.end, '&nbsp;&nbsp;&nbsp;&nbsp;');
-			        	};
+			        	t = methods.insert(t, s.end, '\t');
 			        	methods.setContent(_element, t);
-			        	methods.setCursor(_element, s.end+4);
+			        	methods.setCursor(_element, s.end+1);
 			        	return false;
 			        });
 			        

@@ -1,6 +1,6 @@
 #README
 
-Super duper experimental lightweight customizable jquery plugin markdown editor. Dang.
+Super duper experimental lightweight customizable jquery plugin markdown editor. Dang. [Try it out](http://dbmedialab.github.com/jquery-markd/).
 
 Dependecies:
 

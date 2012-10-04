@@ -5,9 +5,12 @@
 	<title>Markd (contenteditable)</title>
 	<link rel="stylesheet" type="text/css" href="stylesheets/reset.css" />
 	<link rel="stylesheet" type="text/css" href="stylesheets/editor.css" />
+	<link rel="stylesheet" type="text/css" href="forkit/forkit.css" />
 </head>
 
 <body>
+	<a class="forkit" data-text="Fork me on GitHub" href="https://github.com/dbmedialab/jquery-markd"></a>
+	
 	<div id="message" contenteditable># Markd<br /><br />
 Super duper lightweight customizable jquery plugin markdown editor.<br />
 <br />
@@ -25,16 +28,11 @@ Super duper lightweight customizable jquery plugin markdown editor.<br />
 * `ctrl+i` makes current selection italic<br />
 * `ctrl+k` makes current selection a link</div>
 	
-	<!-- Dependencies -->
-	<script type="text/javascript" src="scripts/lib/jquery/jquery.1.7.2.min.js"></script>
-	<script type="text/javascript" src="scripts/lib/marked/lib/marked.js"></script>
-	<script type="text/javascript" src="scripts/lib/mousetrap/mousetrap.js"></script>
-	<script type="text/javascript" src="scripts/lib/jquerypp/jquerypp.custom.js"></script>
-	
-	<!-- Markd -->
-	<script type="text/javascript" src="scripts/jquery-markd.js"></script>
+	<script type="text/javascript" src="markd-editor.min.js"></script>
 	<script type="text/javascript">
 		$('#message').markd({ theme: 'stylesheets/preview.css' });
 	</script>
+	
+	<script type="text/javascript" src="forkit/forkit.js"></script>
 </body>
 </html>

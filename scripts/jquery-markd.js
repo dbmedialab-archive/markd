@@ -32,6 +32,15 @@
 			    var preview = {};
 			    var offset = _element.offset();
 				var opts = $(this).data('options');
+				var autosave = false;
+				
+				//If autosave is on, localstorage is supported, and a autosave-key is present
+				if(opts.autosave && typeof(Storage) !== 'undefined' && _element.attr('data-autosave-key') != undefined){
+				    //Try to open any autosaved document
+				    methods.open(_element);
+				    //Flag autosave as enabled
+				    autosave = true;
+				};
 				
 				//If we are not using a textarea we need to remove all linebreaks or these will be counted twice.
 				if(!_element.is('textarea')){
@@ -47,6 +56,13 @@
 
 			    // !Bind keyboard commands when the textfield recives focus.
 			    _element.bind('focus', function(event){
+			        
+			        // !Bind keyup to fire every time – if autosave is enabled.
+			        if(autosave){				        
+						_element.bind('keyup', function(){
+							methods.save(_element.attr('data-autosave-key'), methods.getContent(_element));
+						});
+			        };
 			        
 			        // !Bind tab to fake-enable tabbing
 			        Mousetrap.bind('tab', function(){
@@ -200,6 +216,7 @@
 			    // !Unbind keyboard commands and clean-up when textarea looses focus.
 			    _element.bind('blur', function(event){
 			        // Unbind the keyboard commands
+				    if(autosave){ _element.unbind('keyup'); };	
 			        Mousetrap.unbind('tab');
 			        Mousetrap.unbind(opts.keyboardShortcuts.bold);
 			        Mousetrap.unbind(opts.keyboardShortcuts.italic);
@@ -351,6 +368,36 @@
 		    } else {
 		    	return insert + string;
 		    };
+		},
+		/**
+		 * Get last saved data from localstorage and insert into editor
+		 * @param	{string} key for localstorage
+		 * @param	{element} 
+		 * @return	{void}
+		 **/
+		open: function(el){
+			var content = localStorage.getItem(el.attr('data-autosave-key'));
+			if( content != null ){
+				methods.setContent(el, content);
+			};
+		},
+		/**
+		 * Save the contents of the editor to localstorage
+		 * @param	{string} key for localstorage
+		 * @param	{string} content to save
+		 * @return	{void}
+		 **/
+		save: function(key, content){
+			console.log('Fire save')
+			localStorage.setItem(key, content);
+		},
+		/**
+		 * Delete the localstorge associated with the key
+		 * @param	{string} key for localstorage
+		 * @return	{void}
+		 **/
+		clear: function(key){
+			localStorage.removeItem(key);
 		}
 	};
 	
@@ -367,6 +414,7 @@
 	
 	// !Default options
 	$.fn.markd.defaults = {
+		autosave: true,
 		theme: 'preview.css',
 		keyboardShortcuts: {
 			bold: 		'ctrl+b',

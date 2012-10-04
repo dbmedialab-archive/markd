@@ -14,6 +14,7 @@ Usage:
 Options:
 	
 	$('#message').markd({
+		autosave: true,				// Enabled/disabled autosave.
 		theme: 'preview.css',		// Stylesheet for preview.
 		keyboardShortcuts: {		// Keyboard shortcuts.
 			bold: 		'ctrl+b',

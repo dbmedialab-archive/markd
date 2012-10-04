@@ -1,0 +1,77 @@
+/* 
+	The editor recives the class '.markd'. 
+	Any global styles for the editor can be added to this class.
+*/
+.markd{
+	font-family: menlo, monospace;
+	font-size: 12px;
+	line-height: 16px;
+	padding: 20px;
+	color: rgb(180, 180, 180);
+	margin: 0 auto;
+	display: block;
+	width: 550px;
+	height: 300px;
+	position: relative;
+	top: 100px;
+	border: none;
+	background-color: rgb(31, 31, 31);
+	overflow-x: hidden;
+	overflow-y: scroll;	
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border-radius: 3px;
+	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
+	white-space: pre;
+}
+
+/*
+	The editor additionally recives the class '.fullscreen' when in fullscreen-mode.
+	Any global styles for the fullscreen-mode editor can be added to the chained classes.
+*/
+.markd.fullscreen{
+	background: white;
+	color: rgb(31, 31, 31);
+	position: fixed;
+	width: 50%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	border-radius: 0px;
+	box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+	resize: none;
+}
+
+.markd:focus{
+	outline: none;
+}
+
+/*
+	The iframe that displays the preview has the class '.markd-preview'.
+	Note that the iframe is positioned with top and left, and width and height
+	using javascript depending on the placement of the textarea.
+*/
+.markd-preview{
+	background: white;
+	border: none;
+	z-index: 9000;
+	position: absolute;
+	border-radius: 3px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/*
+	The editor preview additionally recives the class '.fullscreen' when in fullscreen-mode.
+*/
+.markd-preview.fullscreen{
+	position: fixed;
+	width: 50%;
+	height: 100%;
+	top: 0px;
+	right: 0px;
+	border-left: 1px solid #eee;
+	border-radius: 0px;
+}

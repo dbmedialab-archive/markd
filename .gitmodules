@@ -1,0 +1,6 @@
+[submodule "scripts/lib/marked"]
+	path = scripts/lib/marked
+	url = https://github.com/chjj/marked.git
+[submodule "scripts/lib/mousetrap"]
+	path = scripts/lib/mousetrap
+	url = https://github.com/ccampbell/mousetrap.git

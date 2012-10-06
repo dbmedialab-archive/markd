@@ -14,7 +14,7 @@ Usage:
 Options:
 	
 	$('#message').markd({
-		autosave: true,				// Enabled/disabled autosave.
+		autosave: true,				// Enabled/disabled autosave using localStorage.
 		theme: 'preview.css',		// Stylesheet for preview.
 		keyboardShortcuts: {		// Keyboard shortcuts.
 			bold: 		'ctrl+b',
@@ -33,3 +33,6 @@ Options:
 									// Ignore any HTML that has been input.
 		}
 	});
+	
+Note:   
+For autosave to work you need to add the attribute `data-autosave-key` to the element invoked. The value of `data-autosave-key` is used as the localStorage-key.

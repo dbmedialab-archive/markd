@@ -147,14 +147,17 @@
 			        Mousetrap.bind(data.keyboardShortcuts.preview, function(){					
 			        	if(!data.is_fullscreen){
 			        		if($this.data('markd').preview.el == undefined){
+			        			//Get the offset of the editor before we insert the iframe used for the preview.
+			        			var offset = $this.offset();
 			        			//Create a new iframe to preview the text
 			        			pub.createPreview.apply($this);
 			        			//Shortcut for the new preview
 			        			preview = $this.data('markd').preview;
 			        			//Place the iframe directly above the textarea
 			        			preview.el.css({
-			        				top: $this.offset().top,
-			        				left: $this.offset().left,
+			        				position: 'absolute',
+			        				top: offset.top,
+			        				left: offset.left,
 			        				width: $this.outerWidth(),
 			        				height: $this.outerHeight()
 			        			});

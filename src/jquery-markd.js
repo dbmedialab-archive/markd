@@ -78,6 +78,10 @@
 			});
 			
 		},
+		/**
+		 * Get the content from the editor
+		 * @return	{array} array containing the content of each editor
+		 **/
 		getContent: function(){
 			var content = [];
 			this.each(function(){
@@ -462,16 +466,16 @@
 			if(!$this.is('textarea')){
 			    //If we are not using a textarea newlines does not count in the selection-range,
 			    //so we need to add these manually.
-			    var t = pub.getContent.apply($this).substr(0, selection.end);
+			    var t = priv.getContent.apply($this).substr(0, selection.end);
 			    var newlines = t.match(/(\r\n|\n|\r)/gm);
 			    if( newlines != null ){
-			    	var n = pub.getContent.apply($this).substr(0, ( selection.end+newlines.length )).match(/(\r\n|\n|\r)/gm);
+			    	var n = priv.getContent.apply($this).substr(0, ( selection.end+newlines.length )).match(/(\r\n|\n|\r)/gm);
 			    	selection.start += n.length;
 			    	selection.end += n.length;
 			    	//This fixes a issue where when selecting the first character in a line
 			    	//where the character before is a newline creates the wrong selection.
 			    	//It's not pretty, but it works.
-			    	if(pub.getContent.apply($this).substring(selection.start, selection.end).match(/(\r\n|\n|\r)/gm)){
+			    	if(priv.getContent.apply($this).substring(selection.start, selection.end).match(/(\r\n|\n|\r)/gm)){
 			    		selection.start ++;
 			    		selection.end ++;
 			    	};

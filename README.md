@@ -1,33 +1,36 @@
-#README
+#Markd README
 
-Super duper experimental lightweight customizable jquery plugin markdown editor. Dang. [Try it out](http://dbmedialab.github.com/jquery-markd/).
+Super duper experimental lightweight customizable jquery plugin markdown editor. [Try it out](http://dbmedialab.github.com/jquery-markd/).
 
-Dependecies:
+**Dependecies:**
 
 * [Marked](https://github.com/chjj/marked.git)
 * [Mousetrap](https://github.com/ccampbell/mousetrap.git)
+* [jQuery.selection from jQuery++](http://jquerypp.com/)
 
-Usage:
+**Usage:**
 	
-	$('#message').markd();
+	$('#editor').markd();
 
-Options:
+**Options *(defaults)*:**
 	
-	$('#message').markd({
-		autosave: true,				// Enabled/disabled autosave using localStorage.
+	$('#editor').markd({
+		autosave: true,				// Toggle autosave using localStorage if possible.
 		theme: 'preview.css',		// Stylesheet for preview.
 		keyboardShortcuts: {		// Keyboard shortcuts.
 			bold: 		'ctrl+b',
 			italic: 	'ctrl+i',
-			link: 		'ctrl+k',
+			code: 		'ctrl+k',
+			link: 		'ctrl+l',
 			help:		'ctrl+h',
 			preview:	'ctrl+p',
 			fullscreen: 'ctrl+f'
 		},
 		parser: {
+			compiler: marked,		// Compiler
 			pedantic: false,		// Conform to obscure parts of ↩
 									// markdown.pl as much as possible. ↩
-									// Don't fix any of the original ↩ 
+									// Don't fix any of the original ↩
 									// markdown bugs or poor behavior.
 			sanitize: false			// Sanitize the output. ↩
 									// Ignore any HTML that has been input.

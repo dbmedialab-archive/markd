@@ -125,6 +125,20 @@
 			});
 		},
 		/**
+		 * Get the markdown from the editor
+		 * @return	{array} array containing the markdown of each editor
+		 **/
+		getMarkdown: function(){
+			var content = [];
+			this.each(function(){
+				var $this = $(this),
+					 data = $this.data('markd');
+
+				content.push( data.parser.compiler( priv.getContent.apply($this) ) );
+			});
+			return content;
+		},
+		/**
 		 * Create a new iframe at the top of the document to hold the editors preview
 		 * @param	{string} url to stylesheet used to style the preview
 		 * @return	{array} array containing each element

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Markd (textarea)</title>
+</head>
+
+<body>
+	<textarea class="markd" rows="20" cols="60" data-autosave-key="markdEditor1">Editor #1</textarea>
+	<textarea class="markd" rows="20" cols="60" data-autosave-key="markdEditor2">Editor #2</textarea>
+	
+	<!-- Dependencies -->
+	<script type="text/javascript" src="lib/jquery/jquery.1.8.2.min.js"></script>
+	<script type="text/javascript" src="lib/marked/lib/marked.js"></script>
+	<script type="text/javascript" src="lib/mousetrap/mousetrap.js"></script>
+	<script type="text/javascript" src="lib/jquerypp/jquerypp.custom.js"></script>
+	
+	<!-- Markd -->
+	<script type="text/javascript" src="src/jquery-markd.js"></script>
+	<script type="text/javascript">
+		$('.markd').markd({ theme: 'stylesheets/preview.css' });
+	</script>
+</body>
+</html>

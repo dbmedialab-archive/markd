@@ -54,7 +54,7 @@
 				//If we are not using a textarea we need to remove all linebreaks or these will be counted twice.
 				if(!$this.is('textarea')){
 					var t = $this.html();
-					pub.setContent.apply( $this, t.replace(/(\r\n|\n|\r)/gm, '') );
+					pub.setContent.apply( $this, [t.replace(/(\r\n|\n|\r)/gm, '')] );
 				};
 			    			    
 			    //Set options for marked

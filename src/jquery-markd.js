@@ -18,8 +18,8 @@
 	var pub = {
 		/**
 		 * Init
-		 * @param	{none}
-		 * @return	{void}
+		 * @param	{object} options
+		 * @return	{array} array containing the content of each editor
 		 **/
 		init: function(options) {
 			return this.each(function(){
@@ -34,10 +34,8 @@
 			    			$.fn.markd.defaults,
 			    			options,
 			    			{
-				    			target: $this,
 				    			is_fullscreen: false,
-				    			preview: {},
-				    			offset: $this.offset()
+				    			preview: {}
 			    			}
 			    		)
 			    	);

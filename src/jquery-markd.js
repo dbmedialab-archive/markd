@@ -350,6 +350,10 @@
 			
 			// !Bind ctrl-f as a toggle for fullscreen-mode.
 			Mousetrap.bind(data.keyboardShortcuts.fullscreen, function(){
+			    //If the preview is open we need to close it first.
+			    if($this.data('markd').preview.el != undefined){
+			    	pub.deletePreview.apply($this);
+			    };
 			    //Enter fullscreen
 			    if(!data.is_fullscreen){
 			    	//Flag fullscreen as true

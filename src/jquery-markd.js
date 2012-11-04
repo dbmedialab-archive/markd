@@ -186,7 +186,7 @@
 		},
 		/**
 		 * Get last saved data from localstorage and insert into editor
-		 * @param	{string} key for localstorage
+		 * @param	[{string} key for localstorage]
 		 * @return	{array} array containing each element
 		 **/
 		open: function(key){

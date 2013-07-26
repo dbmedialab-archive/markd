@@ -1,16 +1,7 @@
-/*
+//	 jquery-markd 0.1
 
-	jquery-markd
-	--------
-
-	@file	   	jquery-markd.js
-	@version	
-	@date	   	28.11.12
-	@author	 	Tom-Marius Olsen <tmol@dagbladet.no>
-
-	Copyright (c) 2012 DB Medialab AS <http://www.dbmedialab.no/>
-
-*/
+//		Copyright (c) 2012-2013 DB Medialab AS <http://www.dbmedialab.no/>
+//		jquery-markd may be freely distributed under the MIT license.
 
 (function($) {
 	
@@ -25,21 +16,21 @@
 			return this.each(function(){
 				var $this = $(this);
 				
-			    //If the plugin hasn't been initialized yet save all our settings 
-			    if($this.data('markd') === undefined){
+				//If the plugin hasn't been initialized yet save all our settings 
+				if($this.data('markd') === undefined){
 					$this.addClass('markd mousetrap');
-			    	$this.data('markd', 
-			    		$.extend(
-			    			{},
-			    			$.fn.markd.defaults,
-			    			options,
-			    			{
-				    			is_fullscreen: false,
-				    			preview: {}
-			    			}
-			    		)
-			    	);
-			    };
+					$this.data('markd', 
+						$.extend(
+							{},
+							$.fn.markd.defaults,
+							options,
+							{
+								is_fullscreen: false,
+								preview: {}
+							}
+						)
+					);
+				};
 
 				//If autosave is on, localstorage is supported, and a autosave-key is present, we can enabled autosave
 				if($this.data('markd').autosave && typeof(Storage) !== 'undefined' && $this.attr('data-autosave-key') != undefined){
@@ -54,25 +45,25 @@
 					var t = $this.html();
 					pub.setContent.apply( $this, [t.replace(/(\r\n|\n|\r)/gm, '')] );
 				};
-			    			    
-			    //Set options for marked
-			    $this.data('markd').parser.compiler.setOptions({ 
-			    	pedantic: $this.data('markd').parser.pedantic, 
-			    	sanitize: $this.data('markd').parser.sanitize
-			    });
-			    
-			    var data = $this.data('markd');
+								
+				//Set options for marked
+				$this.data('markd').parser.compiler.setOptions({ 
+					pedantic: $this.data('markd').parser.pedantic, 
+					sanitize: $this.data('markd').parser.sanitize
+				});
+				
+				var data = $this.data('markd');
 
-			    // !Bind keyboard commands when the textfield recives focus.
-			    $this.bind('focus', function(event){
-			        priv.focus.apply($this);			    
-			    });
-			    
-			    // !Unbind keyboard commands and clean-up when textarea looses focus.
-			    $this.bind('blur', function(event){
-			        priv.blur.apply($this);
-			    });
-			    			    
+				// !Bind keyboard commands when the textfield recives focus.
+				$this.bind('focus', function(event){
+					priv.focus.apply($this);
+				});
+				
+				// !Unbind keyboard commands and clean-up when textarea looses focus.
+				$this.bind('blur', function(event){
+					priv.blur.apply($this);
+				});
+								
 			});
 			
 		},
@@ -117,11 +108,11 @@
 						t = priv.getContent.apply($this);
 				
 				if(!$this.is('textarea')){
-				    //If we are not using a textarea remove newlines as these do not count.
-				    var newlines = t.substr(0, position).match(/(\r\n|\n|\r)/gm);
-				    if( newlines != null ){
-				    	position -= newlines.length;
-				    };
+					//If we are not using a textarea remove newlines as these do not count.
+					var newlines = t.substr(0, position).match(/(\r\n|\n|\r)/gm);
+					if( newlines != null ){
+						position -= newlines.length;
+					};
 				};
 				$this.selection(position, position);
 			});
@@ -146,7 +137,7 @@
 		 * @return	{array} array containing each element
 		 **/
 		createPreview: function(theme){
-		    return this.each(function(){
+			return this.each(function(){
 				var $this = $(this),
 						p = {};
 				
@@ -165,18 +156,18 @@
 				p.innards.close();
 				//Create aliases for the head and body inside the iframe for easy access
 				p.head = $('head', p.innards);
-				p.body = $('body', p.innards);								
+				p.body = $('body', p.innards);
 				//Add the preview-theme to the iframe
 				p.head.append('<link rel="stylesheet" href="'+theme+'" />');
 				$this.data('markd').preview = p;
-		    });
+			});
 		},
 		/**
 		 * Remove and delete the editors preview
 		 * @return	{array} array containing each element
 		 **/
 		deletePreview: function(){
-		    return this.each(function(){
+			return this.each(function(){
 				var $this = $(this),
 					 data = $this.data('markd');
 
@@ -190,7 +181,7 @@
 		 * @return	{array} array containing each element
 		 **/
 		open: function(key){
-		    return this.each(function(){
+			return this.each(function(){
 				var $this = $(this);
 				if(key == undefined) key = $this.attr('data-autosave-key');
 				var content = localStorage.getItem(key);
@@ -206,7 +197,7 @@
 		 * @return	{array} array containing each element
 		 **/
 		save: function(key, content){
-		    return this.each(function(){
+			return this.each(function(){
 				var $this = $(this);
 				if(key == undefined) key = $this.attr('data-autosave-key');
 				if(content == undefined) content = priv.getContent.apply($this);
@@ -219,7 +210,7 @@
 		 * @return	{array} array containing each element
 		 **/
 		clear: function(key){
-		    return this.each(function(){
+			return this.each(function(){
 				var $this = $(this);
 				if(key == undefined) key = $this.attr('data-autosave-key');
 				localStorage.removeItem(key);
@@ -235,178 +226,178 @@
 
 			// !Bind keyup to fire every time – if autosave is enabled.
 			if(data.autosave){
-			    $this.bind('keyup', function(){
-			    	pub.save.apply($this);
-			    });
+				$this.bind('keyup', function(){
+					pub.save.apply($this);
+				});
 			};
 			
 			// !Bind tab to fake-enable tabbing
 			Mousetrap.bind('tab', function(){
-			    var s = priv.getSelection.apply($this);
-			    var t = priv.getContent.apply($this);
-			    t = priv.insert(t, s.end, '\t');
-			    pub.setContent.apply($this, [t]);
-			    pub.setCursor.apply($this, [s.end+1]);
-			    return false;
+				var s = priv.getSelection.apply($this);
+				var t = priv.getContent.apply($this);
+				t = priv.insert(t, s.end, '\t');
+				pub.setContent.apply($this, [t]);
+				pub.setCursor.apply($this, [s.end+1]);
+				return false;
 			});
 			
 			// !Bind ctrl-l to links
 			Mousetrap.bind(data.keyboardShortcuts.link, function(){
-			    var s = priv.getSelection.apply($this);
-			    var t = priv.getContent.apply($this);			        	
-			    var l = t.substring(s.start, s.end).match(/(http|https|ftp):\/\//);
-			    if(l != null){
-			    	t = priv.insert(t, s.end, ')');
-			    	t = priv.insert(t, s.start, '[](');
-			    	pub.setContent.apply($this, [t]);
-			    	pub.setCursor.apply($this, [s.start+1]);
-			    } else {
-			    	t = priv.insert(t, s.end, ']()');
-			    	t = priv.insert(t, s.start, '[');
-			    	pub.setContent.apply($this, [t]);
-			    	pub.setCursor.apply($this, [s.end+3]);
-			    };
-			    return false;
+				var s = priv.getSelection.apply($this);
+				var t = priv.getContent.apply($this);						
+				var l = t.substring(s.start, s.end).match(/(http|https|ftp):\/\//);
+				if(l != null){
+					t = priv.insert(t, s.end, ')');
+					t = priv.insert(t, s.start, '[](');
+					pub.setContent.apply($this, [t]);
+					pub.setCursor.apply($this, [s.start+1]);
+				} else {
+					t = priv.insert(t, s.end, ']()');
+					t = priv.insert(t, s.start, '[');
+					pub.setContent.apply($this, [t]);
+					pub.setCursor.apply($this, [s.end+3]);
+				};
+				return false;
 			});
 			
 			// !Bind ctrl-k to code
 			Mousetrap.bind(data.keyboardShortcuts.code, function(){
-			    var s = priv.getSelection.apply($this);
-			    var t = priv.getContent.apply($this);
-			    t = priv.insert(t, s.end, '`');
-			    t = priv.insert(t, s.start, '`');
-			    pub.setContent.apply($this, [t]);
-			    pub.setCursor.apply($this, [s.end+2]);
-			    return false;
+				var s = priv.getSelection.apply($this);
+				var t = priv.getContent.apply($this);
+				t = priv.insert(t, s.end, '`');
+				t = priv.insert(t, s.start, '`');
+				pub.setContent.apply($this, [t]);
+				pub.setCursor.apply($this, [s.end+2]);
+				return false;
 			});
 			
 			// !Bind ctrl-b to bold
 			Mousetrap.bind(data.keyboardShortcuts.bold, function(){
-			    var s = priv.getSelection.apply($this);
-			    var t = priv.getContent.apply($this);
-			    t = priv.insert(t, s.end, '__');
-			    t = priv.insert(t, s.start, '__');
-			    pub.setContent.apply($this, [t]);
-			    pub.setCursor.apply($this, [s.end+4]);
-			    return false;
+				var s = priv.getSelection.apply($this);
+				var t = priv.getContent.apply($this);
+				t = priv.insert(t, s.end, '__');
+				t = priv.insert(t, s.start, '__');
+				pub.setContent.apply($this, [t]);
+				pub.setCursor.apply($this, [s.end+4]);
+				return false;
 			});
 			
 			// !Bind ctrl-i to emphasis/italic
 			Mousetrap.bind(data.keyboardShortcuts.italic, function(){
-			    var s = priv.getSelection.apply($this);
-			    var t = priv.getContent.apply($this);
-			    t = priv.insert(t, s.end, '_');
-			    t = priv.insert(t, s.start, '_');
-			    pub.setContent.apply($this, [t]);
-			    pub.setCursor.apply($this, [s.end+2]);
-			    return false;
+				var s = priv.getSelection.apply($this);
+				var t = priv.getContent.apply($this);
+				t = priv.insert(t, s.end, '_');
+				t = priv.insert(t, s.start, '_');
+				pub.setContent.apply($this, [t]);
+				pub.setCursor.apply($this, [s.end+2]);
+				return false;
 			});
 			
 			// !Bind ctrl-h as in 'help'. Opens a new window showing the markdown syntax.
 			Mousetrap.bind(data.keyboardShortcuts.help, function(){
-			    window.open('http://daringfireball.net/projects/markdown/syntax', '_blank');
-			    return false;
+				window.open('http://daringfireball.net/projects/markdown/syntax', '_blank');
+				return false;
 			});
 			
 			// !Bind ctrl-p to toggle preview text
-			Mousetrap.bind(data.keyboardShortcuts.preview, function(){					
-			    if(!data.is_fullscreen){
-			    	if($this.data('markd').preview.el == undefined){
-			    		//Get the offset of the editor before we insert the iframe used for the preview.
-			    		var offset = $this.offset();
-			    		//Create a new iframe to preview the text
-			    		pub.createPreview.apply($this);
-			    		//Shortcut for the new preview
-			    		preview = $this.data('markd').preview;
-			    		//Place the iframe directly above the textarea
-			    		preview.el.css({
-			    			position: 'absolute',
-			    			top: offset.top,
-			    			left: offset.left,
-			    			width: $this.outerWidth(),
-			    			height: $this.outerHeight()
-			    		});
-			    		//Render the text into the iframe			        			
-			    		preview.body.html( data.parser.compiler( priv.getContent.apply($this) ) );
-			    		// Bind esc to close preview
-			    		Mousetrap.bind('esc', function(){
-			    			//Remove and delete the preview
-			    			pub.deletePreview.apply($this);
-			    			//Unbind esc
-			    			Mousetrap.unbind('esc');
-			    		});
-			    	} else {
-			    		//Remove and delete the preview
-			    		pub.deletePreview.apply($this);
-			    		//Unbind esc
-			    		Mousetrap.unbind('esc');
-			    	};
-			    };
-			    //Return false to prevent default browser behavior.
-			    return false;
+			Mousetrap.bind(data.keyboardShortcuts.preview, function(){
+				if(!data.is_fullscreen){
+					if($this.data('markd').preview.el == undefined){
+						//Get the offset of the editor before we insert the iframe used for the preview.
+						var offset = $this.offset();
+						//Create a new iframe to preview the text
+						pub.createPreview.apply($this);
+						//Shortcut for the new preview
+						preview = $this.data('markd').preview;
+						//Place the iframe directly above the textarea
+						preview.el.css({
+							position: 'absolute',
+							top: offset.top,
+							left: offset.left,
+							width: $this.outerWidth(),
+							height: $this.outerHeight()
+						});
+						//Render the text into the iframe								
+						preview.body.html( data.parser.compiler( priv.getContent.apply($this) ) );
+						// Bind esc to close preview
+						Mousetrap.bind('esc', function(){
+							//Remove and delete the preview
+							pub.deletePreview.apply($this);
+							//Unbind esc
+							Mousetrap.unbind('esc');
+						});
+					} else {
+						//Remove and delete the preview
+						pub.deletePreview.apply($this);
+						//Unbind esc
+						Mousetrap.unbind('esc');
+					};
+				};
+				//Return false to prevent default browser behavior.
+				return false;
 			});
 			
 			// !Bind ctrl-f as a toggle for fullscreen-mode.
 			Mousetrap.bind(data.keyboardShortcuts.fullscreen, function(){
-			    //If the preview is open we need to close it first.
-			    if($this.data('markd').preview.el != undefined){
-			    	pub.deletePreview.apply($this);
-			    };
-			    //Enter fullscreen
-			    if(!data.is_fullscreen){
-			    	//Flag fullscreen as true
-			    	data.is_fullscreen = true;
-			    	//Give editor fullscreen styles
-			    	$this.addClass('fullscreen');
-			    	//Create a new iframe to preview the text
-			    	pub.createPreview.apply($this);
-			    	//Shortcut for the new preview
-			    	preview = $this.data('markd').preview;			        		
-			    	//Give the preview fullscreen styles
-			    	preview.el.addClass('fullscreen');
-			    	//Update the preview on each keyup
-			    	$this.bind('keyup', function(event){
-			    		preview.body.html( data.parser.compiler( priv.getContent.apply($this) ) );
-			    		//Scroll to the correct place in the preview
-			    		priv.paralellScroll.apply($this);
-			    	});
+				//If the preview is open we need to close it first.
+				if($this.data('markd').preview.el != undefined){
+					pub.deletePreview.apply($this);
+				};
+				//Enter fullscreen
+				if(!data.is_fullscreen){
+					//Flag fullscreen as true
+					data.is_fullscreen = true;
+					//Give editor fullscreen styles
+					$this.addClass('fullscreen');
+					//Create a new iframe to preview the text
+					pub.createPreview.apply($this);
+					//Shortcut for the new preview
+					preview = $this.data('markd').preview;
+					//Give the preview fullscreen styles
+					preview.el.addClass('fullscreen');
+					//Update the preview on each keyup
+					$this.bind('keyup', function(event){
+						preview.body.html( data.parser.compiler( priv.getContent.apply($this) ) );
+						//Scroll to the correct place in the preview
+						priv.paralellScroll.apply($this);
+					});
 					//Bind paralell scrolling
 					$this.bind('scroll', function(event){
 						priv.paralellScroll.apply($this);
 					});
-			    	// Bind esc to close fullscreen view
-			    	Mousetrap.bind('esc', function(){
-			    		//Flag fullscreen as false
-			    		data.is_fullscreen = false;
-			    		//Remove fullscreen styles from editor
-			    		$this.removeClass('fullscreen');
-			    		//Unbind preview-update on each keyup 
-			    		$this.unbind('keyup');
+					// Bind esc to close fullscreen view
+					Mousetrap.bind('esc', function(){
+						//Flag fullscreen as false
+						data.is_fullscreen = false;
+						//Remove fullscreen styles from editor
+						$this.removeClass('fullscreen');
+						//Unbind preview-update on each keyup 
+						$this.unbind('keyup');
 						//Unbind paralell scrolling
-			    		$this.unbind('scroll');
-			    		//Unbind esc
-			    		Mousetrap.unbind('esc');
-			    		//Remove and delete the preview
-			    		pub.deletePreview.apply($this);
-			    	});
-			    //Exit fullscreen
-			    } else {
-			    	//Flag fullscreen as false
-			    	data.is_fullscreen = false;
-			    	//Remove fullscreen styles from editor
-			    	$this.removeClass('fullscreen');
-			    	//Unbind preview-update on each keyup 
-			    	$this.unbind('keyup');
-			    	//Unbind paralell scrolling
-			    	$this.unbind('scroll');
-			    	//Unbind esc
-			    	Mousetrap.unbind('esc');
-			    	//Remove and delete the preview
-			    	pub.deletePreview.apply($this);
-			    };
-			    //Return false to prevent default browser behavior.
-			    return false;
-			});			
+						$this.unbind('scroll');
+						//Unbind esc
+						Mousetrap.unbind('esc');
+						//Remove and delete the preview
+						pub.deletePreview.apply($this);
+					});
+				//Exit fullscreen
+				} else {
+					//Flag fullscreen as false
+					data.is_fullscreen = false;
+					//Remove fullscreen styles from editor
+					$this.removeClass('fullscreen');
+					//Unbind preview-update on each keyup 
+					$this.unbind('keyup');
+					//Unbind paralell scrolling
+					$this.unbind('scroll');
+					//Unbind esc
+					Mousetrap.unbind('esc');
+					//Remove and delete the preview
+					pub.deletePreview.apply($this);
+				};
+				//Return false to prevent default browser behavior.
+				return false;
+			});
 		},
 		/**
 		 * Unbind keyboard commands and clean-up when textarea looses focus
@@ -415,9 +406,9 @@
 		blur: function(){
 			var $this = $(this),
 				 data = $this.data('markd');
-				 
+			
 			// Unbind the keyboard commands
-			if(data.autosave){ $this.unbind('keyup'); };	
+			if(data.autosave){ $this.unbind('keyup'); };
 			Mousetrap.unbind('tab');
 			Mousetrap.unbind(data.keyboardShortcuts.bold);
 			Mousetrap.unbind(data.keyboardShortcuts.italic);
@@ -436,11 +427,11 @@
 		 * @return	{string} the new string
 		 **/
 		insert: function(string, index, insert){
-		    if (index > 0){
-		    	return string.substring(0, index) + insert + string.substring(index, string.length);
-		    } else {
-		    	return insert + string;
-		    };
+			if (index > 0){
+				return string.substring(0, index) + insert + string.substring(index, string.length);
+			} else {
+				return insert + string;
+			};
 		},
 		/**
 		 * Get user input
@@ -450,20 +441,20 @@
 			var $this = $(this);
 
 			if($this.is('textarea')){
-			    return $this.val();
+				return $this.val();
 			} else {
-			    // !FIXME: We require the elements id for this to work, this should not be necessary. Someone smarter than me should fix this.
-			    if(document.getElementById($this.attr('id')).innerText){
-			    	var content = document.getElementById($this.attr('id')).innerText;
-			    } else {
-			    	var content = document.getElementById($this.attr('id')).textContent;
-			    };
-			    //Get this, 2 spaces in a content editable actually converts to:
-			    //0020 00a0, meaning, "space no-break space". So, manually convert
-			    //no-break spaces to spaces again before handing to marked.
-			    //Thanks to Oscar Godson for that little tidbit.
-			    content = content.replace(/\u00a0/g, ' ').replace(/&nbsp;/g, ' ');
-			    return content;
+				// !FIXME: We require the elements id for this to work, this should not be necessary. Someone smarter than me should fix this.
+				if(document.getElementById($this.attr('id')).innerText){
+					var content = document.getElementById($this.attr('id')).innerText;
+				} else {
+					var content = document.getElementById($this.attr('id')).textContent;
+				};
+				//Get this, 2 spaces in a content editable actually converts to:
+				//0020 00a0, meaning, "space no-break space". So, manually convert
+				//no-break spaces to spaces again before handing to marked.
+				//Thanks to Oscar Godson for that little tidbit.
+				content = content.replace(/\u00a0/g, ' ').replace(/&nbsp;/g, ' ');
+				return content;
 			};
 		},
 		/**
@@ -476,22 +467,22 @@
 
 			var selection = $this.selection();
 			if(!$this.is('textarea')){
-			    //If we are not using a textarea newlines does not count in the selection-range,
-			    //so we need to add these manually.
-			    var t = priv.getContent.apply($this).substr(0, selection.end);
-			    var newlines = t.match(/(\r\n|\n|\r)/gm);
-			    if( newlines != null ){
-			    	var n = priv.getContent.apply($this).substr(0, ( selection.end+newlines.length )).match(/(\r\n|\n|\r)/gm);
-			    	selection.start += n.length;
-			    	selection.end += n.length;
-			    	//This fixes a issue where when selecting the first character in a line
-			    	//where the character before is a newline creates the wrong selection.
-			    	//It's not pretty, but it works.
-			    	if(priv.getContent.apply($this).substring(selection.start, selection.end).match(/(\r\n|\n|\r)/gm)){
-			    		selection.start ++;
-			    		selection.end ++;
-			    	};
-			    };
+				//If we are not using a textarea newlines does not count in the selection-range,
+				//so we need to add these manually.
+				var t = priv.getContent.apply($this).substr(0, selection.end);
+				var newlines = t.match(/(\r\n|\n|\r)/gm);
+				if( newlines != null ){
+					var n = priv.getContent.apply($this).substr(0, ( selection.end+newlines.length )).match(/(\r\n|\n|\r)/gm);
+					selection.start += n.length;
+					selection.end += n.length;
+					//This fixes a issue where when selecting the first character in a line
+					//where the character before is a newline creates the wrong selection.
+					//It's not pretty, but it works.
+					if(priv.getContent.apply($this).substring(selection.start, selection.end).match(/(\r\n|\n|\r)/gm)){
+						selection.start ++;
+						selection.end ++;
+					};
+				};
 			};
 			return selection;
 		},
@@ -520,14 +511,14 @@
 	}
 	
 	// !Method calling logic
-	$.fn.markd = function(method){		
+	$.fn.markd = function(method){
 		if ( pub[method] ) {
-		    return pub[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+			return pub[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
 		} else if ( typeof method === 'object' || ! method ) {
-		    return pub.init.apply( this, arguments );
+			return pub.init.apply( this, arguments );
 		} else {
-		    $.error( 'Method ' +  method + ' does not exist on jQuery.markd' );
-		};		
+			$.error( 'Method ' +  method + ' does not exist on jQuery.markd' );
+		};
 	};
 	
 	// !Default options

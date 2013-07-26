@@ -34,8 +34,10 @@
 
 				//If autosave is on, localstorage is supported, and a autosave-key is present, we can enabled autosave
 				if($this.data('markd').autosave && typeof(Storage) !== 'undefined' && $this.attr('data-autosave-key') != undefined){
-					//Try to open any autosaved document
-					pub.open.apply($this);
+					if(pub.getContent.apply($this).length == 0){
+						//Try to open any autosaved document
+						pub.open.apply($this);				
+					}
 					//Flag autosave as enabled
 					$this.data('markd').autosave = true;
 				};

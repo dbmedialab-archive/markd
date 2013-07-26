@@ -71,8 +71,8 @@
 			    // !Unbind keyboard commands and clean-up when textarea looses focus.
 			    $this.bind('blur', function(event){
 			        priv.blur.apply($this);
-			    });			    
-			    
+			    });
+			    			    
 			});
 			
 		},
@@ -367,7 +367,13 @@
 			    	//Update the preview on each keyup
 			    	$this.bind('keyup', function(event){
 			    		preview.body.html( data.parser.compiler( priv.getContent.apply($this) ) );
+			    		//Scroll to the correct place in the preview
+			    		priv.paralellScroll.apply($this);
 			    	});
+					//Bind paralell scrolling
+					$this.bind('scroll', function(event){
+						priv.paralellScroll.apply($this);
+					});
 			    	// Bind esc to close fullscreen view
 			    	Mousetrap.bind('esc', function(){
 			    		//Flag fullscreen as false
@@ -376,6 +382,8 @@
 			    		$this.removeClass('fullscreen');
 			    		//Unbind preview-update on each keyup 
 			    		$this.unbind('keyup');
+						//Unbind paralell scrolling
+			    		$this.unbind('scroll');
 			    		//Unbind esc
 			    		Mousetrap.unbind('esc');
 			    		//Remove and delete the preview
@@ -389,6 +397,8 @@
 			    	$this.removeClass('fullscreen');
 			    	//Unbind preview-update on each keyup 
 			    	$this.unbind('keyup');
+			    	//Unbind paralell scrolling
+			    	$this.unbind('scroll');
 			    	//Unbind esc
 			    	Mousetrap.unbind('esc');
 			    	//Remove and delete the preview
@@ -492,6 +502,20 @@
 		 **/
 		 getIframeInnards: function(el) {
 			return el.contentDocument || el.contentWindow.document;
+		},
+		/**
+		 * When in fullscreen mode scroll both editor and preview in paralell
+		 * @param	{element}
+		 * @return	{void}
+		 **/
+		paralellScroll: function(){
+			var $this = $(this);
+			var preview = $this.data('markd').preview;
+			var maxScrollOffsetEditor = $this.get(0).scrollHeight - $this.get(0).clientHeight;
+			var percentageScrolledEditor = 100 / maxScrollOffsetEditor * $this.get(0).scrollTop;			
+			var maxScrollOffsetPreview = preview.body.get(0).scrollHeight - preview.body.get(0).clientHeight;			
+			var scrollTo = maxScrollOffsetPreview / 100 * percentageScrolledEditor;			
+			preview.body.scrollTop( scrollTo );
 		}
 	}
 	

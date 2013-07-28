@@ -6,12 +6,9 @@
 	<title>Markd (textarea)</title>
 	<link rel="stylesheet" type="text/css" href="stylesheets/reset.css" />
 	<link rel="stylesheet" type="text/css" href="stylesheets/editor.css" />
-	<link rel="stylesheet" type="text/css" href="forkit/forkit.css" />	
 </head>
 
 <body>
-	<a class="forkit" data-text="Fork me on GitHub" href="https://github.com/dbmedialab/jquery-markd"></a>
-
 	<textarea id="message" data-autosave-key="messageautosave"># Markd
 Super duper lightweight customizable jquery plugin markdown editor.
 
@@ -30,11 +27,9 @@ Super duper lightweight customizable jquery plugin markdown editor.
 * `ctrl+l` makes current selection a link
 * `ctrl+k` makes current selection code</textarea>
 	
-	<script type="text/javascript" src="markd-editor.min.js"></script>
+	<script type="text/javascript" src="editor.js"></script>
 	<script type="text/javascript">
 		$('#message').markd({ theme: 'stylesheets/preview.css' });
 	</script>
-	
-	<script type="text/javascript" src="forkit/forkit.js"></script>
 </body>
 </html>

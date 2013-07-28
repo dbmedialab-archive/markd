@@ -1,0 +1,15 @@
+{
+	"name": "jquery-markd",
+	"version": "0.1.0",
+	"author": "Tom-Marius Olsen <tmol@dagbladet.no> (http://www.medialaben.no)",
+	"contributors": [
+		"Tom-Marius Olsen <tmol@dagbladet.no> (http://www.medialaben.no)"
+	],
+	"dependencies": {},
+	"devDependencies": {
+		"grunt": "*",
+		"grunt-contrib-jshint": "*",
+		"grunt-contrib-uglify": "*"
+	},
+	"engines": {}
+}

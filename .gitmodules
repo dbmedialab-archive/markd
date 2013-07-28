@@ -1,6 +1,0 @@
-[submodule "lib/marked"]
-	path = lib/marked
-	url = https://github.com/chjj/marked.git
-[submodule "lib/mousetrap"]
-	path = lib/mousetrap
-	url = https://github.com/ccampbell/mousetrap.git

@@ -1,0 +1,6 @@
+[submodule "vendors/marked"]
+	path = vendors/marked
+	url = https://github.com/chjj/marked.git
+[submodule "vendors/mousetrap"]
+	path = vendors/mousetrap
+	url = https://github.com/ccampbell/mousetrap.git

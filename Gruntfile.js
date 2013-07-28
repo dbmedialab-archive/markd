@@ -7,14 +7,28 @@ module.exports = function(grunt) {
 			all: ['Gruntfile.js', 'jquery-markd.js']
 		},
 		uglify: {
-			options: {
-				banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n',
-				mangle: false,
-				sourceMap: '<%= pkg.name %>.sourcemap.js'
-			},
-			build: {
+			plugin: {
+				options: {
+					banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+					mangle: false,
+					sourceMap: '<%= pkg.name %>.sourcemap.js'
+				},
 				files: {
-					'<%= pkg.name %>.min.js': [
+					'<%= pkg.name %>.min.js': [ 
+						'jquery-markd.js'
+					]
+				}
+			},
+			editor: {
+				options: {
+					banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+				},
+				files: {
+					'editor.js': [
+						'vendors/jquery/jquery.10.2.min.js',
+						'vendors/marked/lib/marked.js',
+						'vendors/mousetrap/mousetrap.js',
+						'vendors/jquerypp/jquerypp.custom.js',
 						'jquery-markd.js'
 					]
 				}

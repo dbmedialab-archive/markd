@@ -1,7 +1,7 @@
-//	 jquery-markd 0.1
+//  jquery-markd 0.1
 
-//		Copyright (c) 2012-2013 DB Medialab AS <http://www.dbmedialab.no/>
-//		jquery-markd may be freely distributed under the MIT license.
+//  Copyright (c) 2012-2013 DB Medialab AS <http://www.dbmedialab.no/>
+//  jquery-markd may be freely distributed under the MIT license.
 
 (function($) {
 	
@@ -30,23 +30,23 @@
 							}
 						)
 					);
-				};
+				}
 
 				//If autosave is on, localstorage is supported, and a autosave-key is present, we can enabled autosave
-				if($this.data('markd').autosave && typeof(Storage) !== 'undefined' && $this.attr('data-autosave-key') != undefined){
-					if(pub.getContent.apply($this).length == 0){
+				if($this.data('markd').autosave && typeof(Storage) !== 'undefined' && $this.attr('data-autosave-key') !== undefined){
+					if(pub.getContent.apply($this).length === 0){
 						//Try to open any autosaved document
 						pub.open.apply($this);				
 					}
 					//Flag autosave as enabled
 					$this.data('markd').autosave = true;
-				};
+				}
 				
 				//If we are not using a textarea we need to remove all linebreaks or these will be counted twice.
 				if(!$this.is('textarea')){
 					var t = $this.html();
 					pub.setContent.apply( $this, [t.replace(/(\r\n|\n|\r)/gm, '')] );
-				};
+				}
 								
 				//Set options for marked
 				$this.data('markd').parser.compiler.setOptions({ 
@@ -89,14 +89,14 @@
 		setContent: function(content) {
 			return this.each(function(){
 				var $this = $(this),
-					 data = $this.data('markd');
+					data = $this.data('markd');
 
 				if($this.is('textarea')){
 					$this.val(content);
 				} else {
 					content = content.replace(/(\r\n|\n|\r)/gm, '<br>');
 					$this.html(content);
-				};
+				}
 			});
 		},
 		/**
@@ -112,10 +112,10 @@
 				if(!$this.is('textarea')){
 					//If we are not using a textarea remove newlines as these do not count.
 					var newlines = t.substr(0, position).match(/(\r\n|\n|\r)/gm);
-					if( newlines != null ){
+					if( newlines !== null ){
 						position -= newlines.length;
-					};
-				};
+					}
+				}
 				$this.selection(position, position);
 			});
 		},
@@ -127,7 +127,7 @@
 			var content = [];
 			this.each(function(){
 				var $this = $(this),
-					 data = $this.data('markd');
+					data = $this.data('markd');
 
 				content.push( data.parser.compiler( priv.getContent.apply($this) ) );
 			});
@@ -144,7 +144,7 @@
 						p = {};
 				
 				//If no theme-param is specified use what is specified for the plug-in.
-				if(theme == undefined) theme = $this.data('markd').theme;		
+				if(theme === undefined) theme = $this.data('markd').theme;		
 				//Create a new iframe-element
 				p.el = $('<iframe class="markd-preview"></iframe>');
 				//Add the element to the top of the document
@@ -171,9 +171,9 @@
 		deletePreview: function(){
 			return this.each(function(){
 				var $this = $(this),
-					 data = $this.data('markd');
+					data = $this.data('markd');
 
-				if(data.preview.el != undefined) data.preview.el.remove();
+				if(data.preview.el !== undefined) data.preview.el.remove();
 				$this.data('markd').preview = {};
 			});
 		},
@@ -185,11 +185,11 @@
 		open: function(key){
 			return this.each(function(){
 				var $this = $(this);
-				if(key == undefined) key = $this.attr('data-autosave-key');
+				if(key === undefined) key = $this.attr('data-autosave-key');
 				var content = localStorage.getItem(key);
-				if( content != null ){
+				if( content !== null ){
 					pub.setContent.apply($this, [content]);
-				};
+				}
 			});
 		},
 		/**
@@ -201,8 +201,8 @@
 		save: function(key, content){
 			return this.each(function(){
 				var $this = $(this);
-				if(key == undefined) key = $this.attr('data-autosave-key');
-				if(content == undefined) content = priv.getContent.apply($this);
+				if(key === undefined) key = $this.attr('data-autosave-key');
+				if(content === undefined) content = priv.getContent.apply($this);
 				localStorage.setItem(key, content);
 			});			
 		},
@@ -214,7 +214,7 @@
 		clear: function(key){
 			return this.each(function(){
 				var $this = $(this);
-				if(key == undefined) key = $this.attr('data-autosave-key');
+				if(key === undefined) key = $this.attr('data-autosave-key');
 				localStorage.removeItem(key);
 			});
 		}
@@ -224,14 +224,14 @@
 	var priv = {
 		focus: function(){
 			var $this = $(this),
-				 data = $this.data('markd');
+				data = $this.data('markd');
 
 			// !Bind keyup to fire every time – if autosave is enabled.
 			if(data.autosave){
 				$this.bind('keyup', function(){
 					pub.save.apply($this);
 				});
-			};
+			}
 			
 			// !Bind tab to fake-enable tabbing
 			Mousetrap.bind('tab', function(){
@@ -248,7 +248,7 @@
 				var s = priv.getSelection.apply($this);
 				var t = priv.getContent.apply($this);						
 				var l = t.substring(s.start, s.end).match(/(http|https|ftp):\/\//);
-				if(l != null){
+				if(l !== null){
 					t = priv.insert(t, s.end, ')');
 					t = priv.insert(t, s.start, '[](');
 					pub.setContent.apply($this, [t]);
@@ -258,7 +258,7 @@
 					t = priv.insert(t, s.start, '[');
 					pub.setContent.apply($this, [t]);
 					pub.setCursor.apply($this, [s.end+3]);
-				};
+				}
 				return false;
 			});
 			
@@ -304,7 +304,7 @@
 			// !Bind ctrl-p to toggle preview text
 			Mousetrap.bind(data.keyboardShortcuts.preview, function(){
 				if(!data.is_fullscreen){
-					if($this.data('markd').preview.el == undefined){
+					if($this.data('markd').preview.el === undefined){
 						//Get the offset of the editor before we insert the iframe used for the preview.
 						var offset = $this.offset();
 						//Create a new iframe to preview the text
@@ -333,8 +333,8 @@
 						pub.deletePreview.apply($this);
 						//Unbind esc
 						Mousetrap.unbind('esc');
-					};
-				};
+					}
+				}
 				//Return false to prevent default browser behavior.
 				return false;
 			});
@@ -342,9 +342,9 @@
 			// !Bind ctrl-f as a toggle for fullscreen-mode.
 			Mousetrap.bind(data.keyboardShortcuts.fullscreen, function(){
 				//If the preview is open we need to close it first.
-				if($this.data('markd').preview.el != undefined){
+				if($this.data('markd').preview.el !== undefined){
 					pub.deletePreview.apply($this);
-				};
+				}
 				//Enter fullscreen
 				if(!data.is_fullscreen){
 					//Flag fullscreen as true
@@ -396,7 +396,7 @@
 					Mousetrap.unbind('esc');
 					//Remove and delete the preview
 					pub.deletePreview.apply($this);
-				};
+				}
 				//Return false to prevent default browser behavior.
 				return false;
 			});
@@ -407,10 +407,10 @@
 		 **/
 		blur: function(){
 			var $this = $(this),
-				 data = $this.data('markd');
+				data = $this.data('markd');
 			
 			// Unbind the keyboard commands
-			if(data.autosave){ $this.unbind('keyup'); };
+			if(data.autosave){ $this.unbind('keyup'); }
 			Mousetrap.unbind('tab');
 			Mousetrap.unbind(data.keyboardShortcuts.bold);
 			Mousetrap.unbind(data.keyboardShortcuts.italic);
@@ -424,7 +424,7 @@
 		/**
 		 * Insert a string into a string
 		 * @param	{string} original string
-		 * @param	{int} 	 where to insert the string
+		 * @param	{int} where to insert the string
 		 * @param	{string} string to insert
 		 * @return	{string} the new string
 		 **/
@@ -433,7 +433,7 @@
 				return string.substring(0, index) + insert + string.substring(index, string.length);
 			} else {
 				return insert + string;
-			};
+			}
 		},
 		/**
 		 * Get user input
@@ -445,19 +445,20 @@
 			if($this.is('textarea')){
 				return $this.val();
 			} else {
+				var content;
 				// !FIXME: We require the elements id for this to work, this should not be necessary. Someone smarter than me should fix this.
 				if(document.getElementById($this.attr('id')).innerText){
-					var content = document.getElementById($this.attr('id')).innerText;
+					content = document.getElementById($this.attr('id')).innerText;
 				} else {
-					var content = document.getElementById($this.attr('id')).textContent;
-				};
+					content = document.getElementById($this.attr('id')).textContent;
+				}
 				//Get this, 2 spaces in a content editable actually converts to:
 				//0020 00a0, meaning, "space no-break space". So, manually convert
 				//no-break spaces to spaces again before handing to marked.
 				//Thanks to Oscar Godson for that little tidbit.
 				content = content.replace(/\u00a0/g, ' ').replace(/&nbsp;/g, ' ');
 				return content;
-			};
+			}
 		},
 		/**
 		 * Return the selection for a element.
@@ -473,7 +474,7 @@
 				//so we need to add these manually.
 				var t = priv.getContent.apply($this).substr(0, selection.end);
 				var newlines = t.match(/(\r\n|\n|\r)/gm);
-				if( newlines != null ){
+				if( newlines !== null ){
 					var n = priv.getContent.apply($this).substr(0, ( selection.end+newlines.length )).match(/(\r\n|\n|\r)/gm);
 					selection.start += n.length;
 					selection.end += n.length;
@@ -483,9 +484,9 @@
 					if(priv.getContent.apply($this).substring(selection.start, selection.end).match(/(\r\n|\n|\r)/gm)){
 						selection.start ++;
 						selection.end ++;
-					};
-				};
-			};
+					}
+				}
+			}
 			return selection;
 		},
 		/**
@@ -493,7 +494,7 @@
 		 * @param	{element}
 		 * @return	{element}
 		 **/
-		 getIframeInnards: function(el) {
+		getIframeInnards: function(el) {
 			return el.contentDocument || el.contentWindow.document;
 		},
 		/**
@@ -510,7 +511,7 @@
 			var scrollTo = maxScrollOffsetPreview / 100 * percentageScrolledEditor;			
 			preview.body.scrollTop( scrollTo );
 		}
-	}
+	};
 	
 	// !Method calling logic
 	$.fn.markd = function(method){
@@ -520,7 +521,7 @@
 			return pub.init.apply( this, arguments );
 		} else {
 			$.error( 'Method ' +  method + ' does not exist on jQuery.markd' );
-		};
+		}
 	};
 	
 	// !Default options
@@ -528,10 +529,10 @@
 		autosave: true,
 		theme: 'preview.css',
 		keyboardShortcuts: {
-			bold: 		'ctrl+b',
-			italic: 	'ctrl+i',
-			code: 		'ctrl+k',
-			link: 		'ctrl+l',
+			bold:		'ctrl+b',
+			italic:		'ctrl+i',
+			code:		'ctrl+k',
+			link:		'ctrl+l',
 			help:		'ctrl+h',
 			preview:	'ctrl+p',
 			fullscreen: 'ctrl+f'

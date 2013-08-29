@@ -406,7 +406,7 @@
 				});
 			}
 			
-			Mousetrap.bind('ctrl+alt+i', function(){
+			Mousetrap.bind(data.keyboardShortcuts.statistics, function(){
 				priv.statistics.apply($this);
 				return false;
 			});
@@ -579,13 +579,14 @@
 		autosave: true,
 		theme: 'preview.css',
 		keyboardShortcuts: {
-			bold:		'ctrl+b',
-			italic:		'ctrl+i',
-			code:		'ctrl+k',
-			link:		'ctrl+l',
-			help:		'ctrl+h',
-			preview:	'ctrl+p',
-			fullscreen: 'ctrl+f'
+			bold:		'mod+b',
+			italic:		'mod+i',
+			code:		'mod+k',
+			link:		'mod+l',
+			help:		'mod+h',
+			preview:	'mod+p',
+			fullscreen: 'mod+f',
+			statistics: 'mod+alt+i'
 		},
 		parser: {
 			compiler: window.marked,

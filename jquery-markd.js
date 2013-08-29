@@ -120,10 +120,10 @@
 			});
 		},
 		/**
-		 * Get the markdown from the editor
+		 * Get the html from the editor
 		 * @return	{array} array containing the markdown of each editor
 		 **/
-		getMarkdown: function(){
+		getHtml: function(){
 			var content = [];
 			this.each(function(){
 				var $this = $(this),
@@ -222,182 +222,232 @@
 	
 	//!Private methods
 	var priv = {
-		focus: function(){
+		tab: function(){
+			var $this = $(this);
+			var s = priv.getSelection.apply($this);
+			var t = priv.getContent.apply($this);
+			t = priv.insert(t, s.end, '\t');
+			pub.setContent.apply($this, [t]);
+			pub.setCursor.apply($this, [s.end+1]);
+		},
+		
+		link: function(){
+			var $this = $(this);
+			var s = priv.getSelection.apply($this);
+			var t = priv.getContent.apply($this);						
+			var l = t.substring(s.start, s.end).match(/(http|https|ftp):\/\//);
+			if(l !== null){
+			    t = priv.insert(t, s.end, ')');
+			    t = priv.insert(t, s.start, '[](');
+			    pub.setContent.apply($this, [t]);
+			    pub.setCursor.apply($this, [s.start+1]);
+			} else {
+			    t = priv.insert(t, s.end, ']()');
+			    t = priv.insert(t, s.start, '[');
+			    pub.setContent.apply($this, [t]);
+			    pub.setCursor.apply($this, [s.end+3]);
+			}
+		},
+		
+		code: function(){
+			var $this = $(this);
+			var s = priv.getSelection.apply($this);
+			var t = priv.getContent.apply($this);
+			t = priv.insert(t, s.end, '`');
+			t = priv.insert(t, s.start, '`');
+			pub.setContent.apply($this, [t]);
+			pub.setCursor.apply($this, [s.end+2]);
+		},
+		
+		bold: function(){
+			var $this = $(this);
+			var s = priv.getSelection.apply($this);
+			var t = priv.getContent.apply($this);
+			t = priv.insert(t, s.end, '__');
+			t = priv.insert(t, s.start, '__');
+			pub.setContent.apply($this, [t]);
+			pub.setCursor.apply($this, [s.end+4]);
+		},
+		
+		italic: function(){
+			var $this = $(this);
+			var s = priv.getSelection.apply($this);
+			var t = priv.getContent.apply($this);
+			t = priv.insert(t, s.end, '_');
+			t = priv.insert(t, s.start, '_');
+			pub.setContent.apply($this, [t]);
+			pub.setCursor.apply($this, [s.end+2]);
+		},
+		
+		createPreview: function(){
+			var $this = $(this),
+				data = $this.data('markd');
+			
+			//Get the offset of the editor before we insert the iframe used for the preview.
+			var offset = $this.offset();
+			//Create a new iframe to preview the text
+			pub.createPreview.apply($this);
+			//Shortcut for the new preview
+			preview = $this.data('markd').preview;
+			//Place the iframe directly above the textarea
+			preview.el.css({
+			    position: 'absolute',
+			    top: offset.top,
+			    left: offset.left,
+			    width: $this.outerWidth(),
+			    height: $this.outerHeight()
+			});
+			//Render the text into the iframe								
+			preview.body.html( data.parser.compiler( priv.getContent.apply($this) ) );
+			// Bind esc to close preview
+			Mousetrap.bind('esc', function(){
+				priv.deletePreview.apply($this);
+			});
+		},
+		
+		deletePreview: function(){
+			var $this = $(this);
+			//Remove and delete the preview
+			pub.deletePreview.apply($this);
+			//Unbind esc
+			Mousetrap.unbind('esc');
+		},
+		
+		togglePreview: function(){
 			var $this = $(this),
 				data = $this.data('markd');
 
-			// !Bind keyup to fire every time – if autosave is enabled.
+			if(!data.is_fullscreen){
+			    if($this.data('markd').preview.el === undefined){
+			    	priv.createPreview.apply($this);
+			    } else {
+				    priv.deletePreview.apply($this);
+			    }
+			}
+		},
+		
+		enterFullscreen: function(){
+			var $this = $(this),
+				data = $this.data('markd');
+
+			//If the preview is open we need to close it first.
+			if($this.data('markd').preview.el !== undefined){
+				//FIXME
+				pub.deletePreview.apply($this);
+			}
+			
+			//Flag fullscreen as true
+			data.is_fullscreen = true;
+			//Give editor fullscreen styles
+			$this.addClass('fullscreen');
+			//Create a new iframe to preview the text
+			pub.createPreview.apply($this);
+			//Shortcut for the new preview
+			preview = $this.data('markd').preview;
+			//Give the preview fullscreen styles
+			preview.el.addClass('fullscreen');
+			//Update the preview on each keyup
+			$this.bind('keyup', function(event){
+				preview.body.html( data.parser.compiler( priv.getContent.apply($this) ) );
+				//Scroll to the correct place in the preview
+				priv.paralellScroll.apply($this);
+			});
+			//Bind paralell scrolling
+			$this.bind('scroll', function(event){
+				priv.paralellScroll.apply($this);
+			});
+			// Bind esc to close fullscreen view
+			Mousetrap.bind('esc', function(){
+				priv.exitFullscreen.apply($this);
+			});
+		},
+		
+		exitFullscreen: function(){
+			var $this = $(this),
+				data = $this.data('markd');
+			//Flag fullscreen as false
+			data.is_fullscreen = false;
+			//Remove fullscreen styles from editor
+			$this.removeClass('fullscreen');
+			//Unbind preview-update on each keyup 
+			$this.unbind('keyup');
+			//Unbind paralell scrolling
+			$this.unbind('scroll');
+			//Unbind esc
+			Mousetrap.unbind('esc');
+			//Remove and delete the preview
+			pub.deletePreview.apply($this);
+		},
+		
+		toggleFullscreen: function(){
+			var $this = $(this),
+				data = $this.data('markd');
+
+			if(!data.is_fullscreen){
+				priv.enterFullscreen.apply($this);
+			} else {
+				priv.exitFullscreen.apply($this);
+			}
+		},
+		
+		statistics: function(){
+			var $this = $(this);
+			var $text = $('<div>' + pub.getHtml.apply($this)[0] + '</div>');
+			alert("Antall tegn: " + $text.text().length + "\nAntall ord: " + $text.text().split(" ").length + "\nAntall avsnitt: " + $text.find('>p').length );
+		},
+
+		focus: function(){
+			var $this = $(this),
+				data = $this.data('markd');
+			
 			if(data.autosave){
 				$this.bind('keyup', function(){
 					pub.save.apply($this);
 				});
 			}
 			
-			// !Bind tab to fake-enable tabbing
+			Mousetrap.bind('ctrl+alt+i', function(){
+				priv.statistics.apply($this);
+				return false;
+			});
+			
 			Mousetrap.bind('tab', function(){
-				var s = priv.getSelection.apply($this);
-				var t = priv.getContent.apply($this);
-				t = priv.insert(t, s.end, '\t');
-				pub.setContent.apply($this, [t]);
-				pub.setCursor.apply($this, [s.end+1]);
+				priv.tab.apply($this);
 				return false;
 			});
 			
-			// !Bind ctrl-l to links
 			Mousetrap.bind(data.keyboardShortcuts.link, function(){
-				var s = priv.getSelection.apply($this);
-				var t = priv.getContent.apply($this);						
-				var l = t.substring(s.start, s.end).match(/(http|https|ftp):\/\//);
-				if(l !== null){
-					t = priv.insert(t, s.end, ')');
-					t = priv.insert(t, s.start, '[](');
-					pub.setContent.apply($this, [t]);
-					pub.setCursor.apply($this, [s.start+1]);
-				} else {
-					t = priv.insert(t, s.end, ']()');
-					t = priv.insert(t, s.start, '[');
-					pub.setContent.apply($this, [t]);
-					pub.setCursor.apply($this, [s.end+3]);
-				}
+				priv.link.apply($this);
 				return false;
 			});
 			
-			// !Bind ctrl-k to code
 			Mousetrap.bind(data.keyboardShortcuts.code, function(){
-				var s = priv.getSelection.apply($this);
-				var t = priv.getContent.apply($this);
-				t = priv.insert(t, s.end, '`');
-				t = priv.insert(t, s.start, '`');
-				pub.setContent.apply($this, [t]);
-				pub.setCursor.apply($this, [s.end+2]);
+				priv.code.apply($this);
 				return false;
 			});
 			
-			// !Bind ctrl-b to bold
 			Mousetrap.bind(data.keyboardShortcuts.bold, function(){
-				var s = priv.getSelection.apply($this);
-				var t = priv.getContent.apply($this);
-				t = priv.insert(t, s.end, '__');
-				t = priv.insert(t, s.start, '__');
-				pub.setContent.apply($this, [t]);
-				pub.setCursor.apply($this, [s.end+4]);
+				priv.bold.apply($this);
 				return false;
 			});
 			
-			// !Bind ctrl-i to emphasis/italic
 			Mousetrap.bind(data.keyboardShortcuts.italic, function(){
-				var s = priv.getSelection.apply($this);
-				var t = priv.getContent.apply($this);
-				t = priv.insert(t, s.end, '_');
-				t = priv.insert(t, s.start, '_');
-				pub.setContent.apply($this, [t]);
-				pub.setCursor.apply($this, [s.end+2]);
+				priv.italic.apply($this);
 				return false;
 			});
 			
-			// !Bind ctrl-h as in 'help'. Opens a new window showing the markdown syntax.
 			Mousetrap.bind(data.keyboardShortcuts.help, function(){
 				window.open('http://daringfireball.net/projects/markdown/syntax', '_blank');
 				return false;
 			});
 			
-			// !Bind ctrl-p to toggle preview text
 			Mousetrap.bind(data.keyboardShortcuts.preview, function(){
-				if(!data.is_fullscreen){
-					if($this.data('markd').preview.el === undefined){
-						//Get the offset of the editor before we insert the iframe used for the preview.
-						var offset = $this.offset();
-						//Create a new iframe to preview the text
-						pub.createPreview.apply($this);
-						//Shortcut for the new preview
-						preview = $this.data('markd').preview;
-						//Place the iframe directly above the textarea
-						preview.el.css({
-							position: 'absolute',
-							top: offset.top,
-							left: offset.left,
-							width: $this.outerWidth(),
-							height: $this.outerHeight()
-						});
-						//Render the text into the iframe								
-						preview.body.html( data.parser.compiler( priv.getContent.apply($this) ) );
-						// Bind esc to close preview
-						Mousetrap.bind('esc', function(){
-							//Remove and delete the preview
-							pub.deletePreview.apply($this);
-							//Unbind esc
-							Mousetrap.unbind('esc');
-						});
-					} else {
-						//Remove and delete the preview
-						pub.deletePreview.apply($this);
-						//Unbind esc
-						Mousetrap.unbind('esc');
-					}
-				}
-				//Return false to prevent default browser behavior.
+				priv.togglePreview.apply($this);
 				return false;
 			});
 			
-			// !Bind ctrl-f as a toggle for fullscreen-mode.
 			Mousetrap.bind(data.keyboardShortcuts.fullscreen, function(){
-				//If the preview is open we need to close it first.
-				if($this.data('markd').preview.el !== undefined){
-					pub.deletePreview.apply($this);
-				}
-				//Enter fullscreen
-				if(!data.is_fullscreen){
-					//Flag fullscreen as true
-					data.is_fullscreen = true;
-					//Give editor fullscreen styles
-					$this.addClass('fullscreen');
-					//Create a new iframe to preview the text
-					pub.createPreview.apply($this);
-					//Shortcut for the new preview
-					preview = $this.data('markd').preview;
-					//Give the preview fullscreen styles
-					preview.el.addClass('fullscreen');
-					//Update the preview on each keyup
-					$this.bind('keyup', function(event){
-						preview.body.html( data.parser.compiler( priv.getContent.apply($this) ) );
-						//Scroll to the correct place in the preview
-						priv.paralellScroll.apply($this);
-					});
-					//Bind paralell scrolling
-					$this.bind('scroll', function(event){
-						priv.paralellScroll.apply($this);
-					});
-					// Bind esc to close fullscreen view
-					Mousetrap.bind('esc', function(){
-						//Flag fullscreen as false
-						data.is_fullscreen = false;
-						//Remove fullscreen styles from editor
-						$this.removeClass('fullscreen');
-						//Unbind preview-update on each keyup 
-						$this.unbind('keyup');
-						//Unbind paralell scrolling
-						$this.unbind('scroll');
-						//Unbind esc
-						Mousetrap.unbind('esc');
-						//Remove and delete the preview
-						pub.deletePreview.apply($this);
-					});
-				//Exit fullscreen
-				} else {
-					//Flag fullscreen as false
-					data.is_fullscreen = false;
-					//Remove fullscreen styles from editor
-					$this.removeClass('fullscreen');
-					//Unbind preview-update on each keyup 
-					$this.unbind('keyup');
-					//Unbind paralell scrolling
-					$this.unbind('scroll');
-					//Unbind esc
-					Mousetrap.unbind('esc');
-					//Remove and delete the preview
-					pub.deletePreview.apply($this);
-				}
-				//Return false to prevent default browser behavior.
+				priv.toggleFullscreen.apply($this);
 				return false;
 			});
 		},

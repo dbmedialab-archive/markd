@@ -217,7 +217,7 @@
 				if(key === undefined) key = $this.attr('data-autosave-key');
 				localStorage.removeItem(key);
 			});
-		}
+		}		
 	};
 	
 	//!Private methods
@@ -396,6 +396,36 @@
 			alert("Antall tegn: " + $text.text().length + "\nAntall ord: " + $text.text().split(" ").length + "\nAntall avsnitt: " + $text.find('>p').length );
 		},
 
+		pasteHtmlToMarkdown: function(){
+			var $this = $(this);
+			var clipboard = prompt('Lim inn html', '');
+			clipboard = toMarkdown(clipboard);
+			var s = priv.getSelection.apply($this);
+			var t = priv.getContent.apply($this);
+			if(s.start != s.end){
+				t = t.slice(0, s.start) + clipboard + t.slice(s.end, t.length);
+			} else {
+				t = priv.insert(t, s.start, clipboard);
+			}
+			pub.setContent.apply($this, [t]);
+			pub.setCursor.apply($this, [s.start + clipboard.length]);
+		},
+		
+		pasteRemovFormating: function(){
+			var $this = $(this);
+			var clipboard = prompt('Lim inn', '');
+			clipboard = clipboard.replace(/(<([^>]+)>)/ig,'');
+			var s = priv.getSelection.apply($this);
+			var t = priv.getContent.apply($this);
+			if(s.start != s.end){
+				t = t.slice(0, s.start) + clipboard + t.slice(s.end, t.length);
+			} else {
+				t = priv.insert(t, s.start, clipboard);
+			}
+			pub.setContent.apply($this, [t]);
+			pub.setCursor.apply($this, [s.start + clipboard.length]);
+		},
+
 		focus: function(){
 			var $this = $(this),
 				data = $this.data('markd');
@@ -405,6 +435,16 @@
 					pub.save.apply($this);
 				});
 			}
+
+			Mousetrap.bind('mod+shift+v', function(){
+				priv.pasteRemovFormating.apply($this);
+				return false;
+			});
+			
+			Mousetrap.bind('mod+alt+v', function(){
+				priv.pasteHtmlToMarkdown.apply($this);
+				return false;
+			});
 			
 			Mousetrap.bind(data.keyboardShortcuts.statistics, function(){
 				priv.statistics.apply($this);

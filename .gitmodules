@@ -4,6 +4,3 @@
 [submodule "vendors/mousetrap"]
 	path = vendors/mousetrap
 	url = https://github.com/ccampbell/mousetrap.git
-[submodule "vendors/to-markdown"]
-	path = vendors/to-markdown
-	url = https://github.com/domchristie/to-markdown.git

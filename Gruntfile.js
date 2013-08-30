@@ -29,6 +29,7 @@ module.exports = function(grunt) {
 						'vendors/marked/lib/marked.js',
 						'vendors/mousetrap/mousetrap.js',
 						'vendors/jquerypp/jquerypp.custom.js',
+						'vendors/to-markdown/to-markdown.js',
 						'jquery-markd.js'
 					]
 				}

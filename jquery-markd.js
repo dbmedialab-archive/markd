@@ -204,7 +204,7 @@
 				if(key === undefined) key = $this.attr('data-autosave-key');
 				if(content === undefined) content = priv.getContent.apply($this);
 				localStorage.setItem(key, content);
-			});			
+			});
 		},
 		/**
 		 * Delete the localstorge associated with the key
@@ -217,7 +217,7 @@
 				if(key === undefined) key = $this.attr('data-autosave-key');
 				localStorage.removeItem(key);
 			});
-		}		
+		}
 	};
 	
 	//!Private methods
@@ -234,18 +234,18 @@
 		link: function(){
 			var $this = $(this);
 			var s = priv.getSelection.apply($this);
-			var t = priv.getContent.apply($this);						
+			var t = priv.getContent.apply($this);
 			var l = t.substring(s.start, s.end).match(/(http|https|ftp):\/\//);
 			if(l !== null){
-			    t = priv.insert(t, s.end, ')');
-			    t = priv.insert(t, s.start, '[](');
-			    pub.setContent.apply($this, [t]);
-			    pub.setCursor.apply($this, [s.start+1]);
+				t = priv.insert(t, s.end, ')');
+				t = priv.insert(t, s.start, '[](');
+				pub.setContent.apply($this, [t]);
+				pub.setCursor.apply($this, [s.start+1]);
 			} else {
-			    t = priv.insert(t, s.end, ']()');
-			    t = priv.insert(t, s.start, '[');
-			    pub.setContent.apply($this, [t]);
-			    pub.setCursor.apply($this, [s.end+3]);
+				t = priv.insert(t, s.end, ']()');
+				t = priv.insert(t, s.start, '[');
+				pub.setContent.apply($this, [t]);
+				pub.setCursor.apply($this, [s.end+3]);
 			}
 		},
 		
@@ -291,13 +291,13 @@
 			preview = $this.data('markd').preview;
 			//Place the iframe directly above the textarea
 			preview.el.css({
-			    position: 'absolute',
-			    top: offset.top,
-			    left: offset.left,
-			    width: $this.outerWidth(),
-			    height: $this.outerHeight()
+				position: 'absolute',
+				top: offset.top,
+				left: offset.left,
+				width: $this.outerWidth(),
+				height: $this.outerHeight()
 			});
-			//Render the text into the iframe								
+			//Render the text into the iframe
 			preview.body.html( data.parser.compiler( priv.getContent.apply($this) ) );
 			// Bind esc to close preview
 			Mousetrap.bind('esc', function(){
@@ -318,11 +318,11 @@
 				data = $this.data('markd');
 
 			if(!data.is_fullscreen){
-			    if($this.data('markd').preview.el === undefined){
-			    	priv.createPreview.apply($this);
-			    } else {
-				    priv.deletePreview.apply($this);
-			    }
+				if($this.data('markd').preview.el === undefined){
+					priv.createPreview.apply($this);
+				} else {
+					priv.deletePreview.apply($this);
+				}
 			}
 		},
 		

@@ -508,6 +508,9 @@
 			Mousetrap.unbind(data.keyboardShortcuts.help);
 			Mousetrap.unbind(data.keyboardShortcuts.preview);
 			Mousetrap.unbind(data.keyboardShortcuts.fullscreen);
+			Mousetrap.unbind(data.keyboardShortcuts.statistics);
+			Mousetrap.unbind('mod+shift+v');
+			Mousetrap.unbind('mod+alt+v');
 			// If we are not in fullscreen-mode and the preview is visible, we need to kill the preview.
 			if(!data.is_fullscreen) pub.deletePreview.apply($this);
 		},

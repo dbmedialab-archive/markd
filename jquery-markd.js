@@ -278,6 +278,19 @@
 			pub.setContent.apply($this, [t]);
 			pub.setCursor.apply($this, [s.end+2]);
 		},
+
+		quote: function(){
+			var $this = $(this);
+			var s = priv.getSelection.apply($this);
+			var t = priv.getContent.apply($this);
+			if(t.substr(s.start-1, 1).search(/\n/g) === 0){
+				t = priv.insert(t, s.start, '> ');
+			} else {
+				t = priv.insert(t, s.start, '\n> ');
+			}
+			pub.setContent.apply($this, [t]);
+			pub.setCursor.apply($this, [s.end+3]);
+		},
 		
 		createPreview: function(){
 			var $this = $(this),
@@ -430,6 +443,38 @@
 			var $this = $(this),
 				data = $this.data('markd');
 			
+			if($('.markd-toolbar')){
+				$('.markd-toolbar .action.bold').unbind('click').on('click', function(){
+					priv.bold.apply($this);
+					$('.markd-toolbar').hide();
+				});
+				$('.markd-toolbar .action.italic').unbind('click').on('click', function(){
+					priv.italic.apply($this);
+					$('.markd-toolbar').hide();
+				});
+				$('.markd-toolbar .action.quote').unbind('click').on('click', function(){
+					priv.quote.apply($this);
+					$('.markd-toolbar').hide();
+				});
+				$('.markd-toolbar .action.link').unbind('click').on('click', function(){
+					priv.link.apply($this);
+					$('.markd-toolbar').hide();
+				});
+			
+				$(document).unbind('mouseup').on('mouseup', function(event){
+					var selection = priv.getSelection.apply($this);
+					if(selection.width){
+						var xy = {
+							top: ( event.pageY - 45 ),
+							left: event.pageX - ( $('.markd-toolbar').width() / 2 )
+						};
+						$('.markd-toolbar').show().css(xy);
+					} else {
+						$('.markd-toolbar').hide();
+					}
+				});
+			}
+			
 			if(data.autosave){
 				$this.bind('keyup', function(){
 					pub.save.apply($this);
@@ -498,7 +543,7 @@
 		blur: function(){
 			var $this = $(this),
 				data = $this.data('markd');
-			
+						
 			// Unbind the keyboard commands
 			if(data.autosave){ $this.unbind('keyup'); }
 			Mousetrap.unbind('tab');

@@ -80,7 +80,11 @@
 				});
 				
 				var data = $this.data('markd');
-
+				
+				if( $this.attr('data-auto-expand') == 'true' ){
+					priv.autoExpand.apply($this);
+				}
+				
 				// !Bind keyboard commands when the textfield recives focus.
 				$this.bind('focus', function(event){
 					priv.focus.apply($this);
@@ -505,6 +509,13 @@
 					pub.save.apply($this);
 				});
 			}
+			
+			if( $this.attr('data-auto-expand') == 'true' ){
+				priv.autoExpand.apply($this);
+				$this.bind('keyup', function(){
+					priv.autoExpand.apply($this);
+				});
+			}
 
 			Mousetrap.bind('mod+shift+v', function(){
 				priv.pasteRemovFormating.apply($this);
@@ -561,6 +572,14 @@
 				return false;
 			});
 		},
+		
+		autoExpand: function(){
+			var $this = $(this);
+			var lineHeight = parseFloat($this.css('line-height'));
+			var scrollHeight = $this[0].scrollHeight;
+			$this.css({ 'height' : (scrollHeight) + 'px' });
+		},
+		
 		/**
 		 * Unbind keyboard commands and clean-up when textarea looses focus
 		 * @return	{void}

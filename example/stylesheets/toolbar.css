@@ -11,7 +11,7 @@
 	display: block;
 	max-width: 550px;
 	width: 90%;
-	height: 400px;
+	height: 300px;
 	position: relative;
 	border: none;
 	overflow-x: hidden;
@@ -19,7 +19,14 @@
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	/* white-space: pre; */
+	border: 1px solid rgb(207, 207, 207);
+	padding: 20px;
+}
+
+.markd[data-auto-expand]{
+	-webkit-transition: height 0.25s;
+	overflow-x: hidden;
+	overflow-y: hidden;	
 }
 
 /*

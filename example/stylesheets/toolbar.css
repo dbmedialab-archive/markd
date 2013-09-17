@@ -72,6 +72,9 @@
 	border-radius: 0px;
 }
 
+/*
+	Styling of the editors toolbar.
+*/
 .markd-toolbar{
 	list-style: none;
 	font-family: menlo, monospace;

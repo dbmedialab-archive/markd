@@ -1,5 +1,9 @@
 module.exports = function(grunt) {
 
+	// Load the plugins
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -25,22 +29,16 @@ module.exports = function(grunt) {
 				},
 				files: {
 					'editor.js': [
-						'vendors/jquery/jquery.10.2.min.js',
-						'vendors/marked/lib/marked.js',
-						'vendors/mousetrap/mousetrap.js',
+						'vendors/jquery/jquery.min.js',
+						'vendors/mousetrap/mousetrap.min.js',
 						'vendors/jquerypp/jquerypp.custom.js',
-						'vendors/to-markdown/to-markdown.js',
 						'jquery-markd.js'
 					]
 				}
 			}
 		}
 	});
-
-	// Load the plugins
-	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-
+	
 	// Default task(s).
 	grunt.registerTask('default', [
 		'jshint',

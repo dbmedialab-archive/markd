@@ -2,46 +2,29 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>Markd (textarea)</title>
-	<style>
-		iframe{
-			background-color: white;
-		}
-	</style>
+	<title>Markd (toolbar)</title>
+	<link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/toolbar.css" />
 </head>
 
 <body>
-	<textarea id="message" rows="20" cols="60" data-autosave-key="markdAutosave"># Markd
-Super duper lightweight customizable jquery plugin markdown editor.
+	<textarea id="message" data-markd data-markd-toolbar="[b,i,q,l]">There are dozens of us! Dozens! Oh, yeah. The guy in the $4,000 suit is holding the elevator for a guy who doesn't make that in three months. COME ON! 
+	
+Sister's my new mother, Mother. And is it just me or is she looking hotter? When a man needs to prove to a woman that he's actually… When a man loves a woman… I'm not interested in you that way. Tobias: What way? Michael: Pick one. Well, they got the Asian right… "hotties" might be a stretch. Saw this on the highway and almost blue myself. Hop on?
 
-> Awsomesauce!
+This shall keep me safe from the hot Mexican sun. But I didn't take wasn't optimistic it could be done for an answer. Everybody dance… __NOW__.
 
-* Works with textareas and (almost) any «contenteditable»
-* No editing-inside-iframe-crap
-* Customize to your hearts delight
-
-###### Keyboard-commands
-* `[ctrl/cmd]+p` display a preview the current text
-* `[ctrl/cmd]+f` enter fullscreen-mode with live preview
-* `[ctrl/cmd]+alt+i` show statistics about the current text
-* `[ctrl/cmd]+alt+v` paste html and convert to markdown
-* `[ctrl/cmd]+alt+v` paste and remove formating
-* `[ctrl/cmd]+h` opens a new window with the [syntax reference](http://daringfireball.net/projects/markdown/syntax)
-* `[ctrl/cmd]+b` makes current selection bold
-* `[ctrl/cmd]+i` makes current selection italic
-* `[ctrl/cmd]+l` makes current selection a link</textarea>
+Chicken fingers… with spicy club sauce. Well, they got the Asian right… "hotties" might be a stretch. I'm not interested in you that way. Tobias: What way? Michael: Pick one. Mister gay is bleeding! Mister gay! Yeah, like anyone would want to R her.</textarea>
 	
 	<!-- Dependencies -->
-	<script type="text/javascript" src="../vendors/jquery/jquery.10.2.min.js"></script>
-	<script type="text/javascript" src="../vendors/marked/lib/marked.js"></script>
-	<script type="text/javascript" src="../vendors/mousetrap/mousetrap.js"></script>
+	<script type="text/javascript" src="../vendors/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="../vendors/mousetrap/mousetrap.min.js"></script>
 	<script type="text/javascript" src="../vendors/jquerypp/jquerypp.custom.js"></script>
-	<script type="text/javascript" src="../vendors/to-markdown/to-markdown.js"></script>
 
 	<!-- Markd -->
 	<script type="text/javascript" src="../jquery-markd.js"></script>
 	<script type="text/javascript">
-		$('#message').markd({ theme: 'stylesheets/preview.css' });
+		$('#message').markd();
 	</script>
 </body>
 </html>

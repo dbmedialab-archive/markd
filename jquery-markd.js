@@ -40,11 +40,11 @@
 				//editors share the same toolbar.
 				//The toolbar can be customized using the data-markd-toolbar attribute 
 				//like so: data-markd-toolbar="[b,i]"
-				if( $('.markd-toolbar').length === 0 && $this.attr('data-markd-toolbar') != undefined ){
+				if( $('.markd-toolbar').length === 0 && $this.attr('data-markd-toolbar') !== undefined ){
 					
 					var toolbarStructure = [];
 					if($this.attr('data-markd-toolbar').length){
-						toolbarStructure = $this.attr('data-markd-toolbar').replace('[','').replace(']','').split(',')
+						toolbarStructure = $this.attr('data-markd-toolbar').replace('[','').replace(']','').split(',');
 					} else {
 						toolbarStructure = $this.data('markd').toolbar;
 					}
@@ -210,16 +210,18 @@
 			var $this = $(this),
 				data = $this.data('markd');
 			
-			if( $('.markd-toolbar').length != 0 && $this.attr('data-markd-toolbar') != undefined ){
+			if( $('.markd-toolbar').length !== 0 && $this.attr('data-markd-toolbar') !== undefined ){
 				var $toolbar = $('.markd-toolbar');
 				
+				//Bind methods to each button in the toolbar
 				$toolbar.find('.action').each(function(index, element){
 					$(element).unbind('click').on('click', function(){
 						priv[$(element).attr('data-action')].apply($this);
 						$toolbar.hide();
 					});
 				});
-			
+				
+				//Bind the mouse-up event so that we can place the toolbar at the correct coordinates
 				$(document).unbind('mouseup').on('mouseup', function(event){
 					var selection = priv.getSelection.apply($this);
 					if(selection.width){
@@ -235,7 +237,7 @@
 			}
 			
 			//Bind keybord commands
-			for(key in data.kbd){
+			for(var key in data.kbd){
 				if(data.kbd.hasOwnProperty(key)){
 					priv.bind.apply($this, [data.kbd[key], key]);
 				}
@@ -261,8 +263,13 @@
 			//Unbind mouse events used for the toolbar
 			$(document).unbind('mouseup');
 			
-			// Unbind the keyboard commands
+			//Unbind the keyboard commands
 			Mousetrap.reset();
+			
+			//Hide the toolbar if the editor looses focus
+			setTimeout(function(){
+				$('.markd-toolbar').hide();
+			}, 500);
 		},
 		
 		//Returns a copy of 'string' where 'insert' is inserted at 'index'
@@ -343,7 +350,7 @@
 			italic:		'mod+i',
 			code:		'mod+k',
 			link:		'mod+l',
-			stats: 		'mod+alt+i'
+			stats:		'mod+alt+i'
 		},
 		toolbar: ['b','i','q','l']
 	};

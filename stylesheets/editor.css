@@ -3,75 +3,93 @@
 	Any global styles for the editor can be added to this class.
 */
 .markd{
-	font-family: menlo, monospace;
-	font-size: 12px;
-	line-height: 16px;
-	padding: 20px;
-	color: rgb(180, 180, 180);
-	margin: 0 auto;
+	/* font-family: menlo, monospace; */
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.4em;
+	color: rgb(34, 34, 34);
+	margin: 50px auto 0;
 	display: block;
-	width: 550px;
+	max-width: 550px;
+	width: 90%;
 	height: 300px;
 	position: relative;
-	top: 100px;
-	border: none;
-	background-color: rgb(31, 31, 31);
-	overflow-x: hidden;
-	overflow-y: scroll;	
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	border-radius: 3px;
-	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
-	white-space: pre;
+	padding: 20px;
 }
 
 /*
-	The editor additionally recives the class '.fullscreen' when in fullscreen-mode.
-	Any global styles for the fullscreen-mode editor can be added to the chained classes.
+	Styling of the editors toolbar.
 */
-.markd.fullscreen{
-	background: white;
-	color: rgb(31, 31, 31);
-	position: fixed;
-	width: 50%;
-	height: 100%;
-	top: 0px;
-	left: 0px;
-	border-radius: 0px;
-	box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
-	resize: none;
-}
-
-.markd:focus{
-	outline: none;
-}
-
-/*
-	The iframe that displays the preview has the class '.markd-preview'.
-	Note that the iframe is positioned with top and left, and width and height
-	using javascript depending on the placement of the textarea.
-*/
-.markd-preview{
-	background: white;
-	border: none;
-	z-index: 9000;
+.markd-toolbar{
+	list-style: none;
+	font-family: menlo, monospace;
 	position: absolute;
-	border-radius: 3px;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+	top: 0;
+	left: 0;
+	z-index: 999;
+	display: none;
+	padding-left: 0;
 }
 
-/*
-	The editor preview additionally recives the class '.fullscreen' when in fullscreen-mode.
-*/
-.markd-preview.fullscreen{
-	position: fixed;
-	width: 50%;
-	height: 100%;
+.markd-toolbar:after{
+	content: " ";
+	display: block;
+	position: absolute;
+	width: 0px;
+	height: 0px;
+	top: 29px;
+	left: 50%;
+	margin-left: -7px;
+	border-style: solid;
+	border-width: 7px 7px 0 7px;
+	border-color: rgb(34, 34, 34) transparent transparent transparent;
+}
+
+.markd-toolbar li{
+	float: left;
+	background: rgb(34, 34, 34);
+}
+
+.markd-toolbar li .action{
+	cursor: pointer;
+	color: white;
+	padding: 5px 10px;
+	display: block;
+}
+
+.markd-toolbar li .action svg path{
+	fill: white;
+}
+
+.markd-toolbar li:hover{
+	background: rgb(57, 149, 247);
+}
+
+.markd-toolbar li:first-child{
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+
+.markd-toolbar li:last-child{
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
+.markd-toolbar li .bold{
+	font-weight: bold;
+}
+
+.markd-toolbar li .italic{
+	font-style: italic;
+}
+
+.markd-toolbar li .quote .icon,
+.markd-toolbar li .link .icon{
+	width: 12px;
+	height: 12px;
+	position: relative;
 	top: 0px;
-	right: 0px;
-	border-left: 1px solid #eee;
-	border-radius: 0px;
 }

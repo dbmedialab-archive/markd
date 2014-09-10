@@ -1,13 +1,14 @@
 {
-  "name": "jquery-markd",
-  "version": "0.3.0",
+  "name": "markd",
+  "version": "0.4.0",
   "authors": [
     "Tom-Marius Olsen <tom-marius.olsen@dagbladet.no>"
   ],
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "jquery": "1.10.2",
-    "mousetrap": "~1.4.5"
+    "jquery": ">= 2.0.0",
+    "normalize-css": "~3.0.1",
+    "showdown": "~0.3.1"
   }
 }
